@@ -12,6 +12,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['full_name'] = user.full_name
         token['email'] = user.email
         token['username'] = user.username
+        token['cedula'] = user.profile.cedula
+        token['rol'] = user.profile.rol
 
         return token
     
