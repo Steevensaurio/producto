@@ -8,38 +8,30 @@ import Dashboard from "./components/Pages/Dashboard";
 import { ContextProvider } from "./context/ContextProvider";
 
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>
-        <Route 
-          path="/"
-          element={
-            <ProtectedRoute>
-              <StudentDashboard/>
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/login" element={<LoginPage />}/>
-        <Route path="/home" element={<Home />}/>
-        <Route path="/lg" 
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/home" element={<Home />} />
+        <Route
+          path="/lg"
           element={
             <ContextProvider>
               <LoginPg />
             </ContextProvider>
           }
         />
-        <Route path="/dashboard" 
+        <Route
+          path="/dashboard"
           element={
             <ContextProvider>
               <Dashboard />
             </ContextProvider>
           }
         />
-        
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
