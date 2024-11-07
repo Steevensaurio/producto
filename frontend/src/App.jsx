@@ -4,6 +4,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import StudentDashboard from "./views/StudentDashboard";
 import Home from "./views/Home";
 import LoginPg from "./components/Pages/LoginPg";
+import Dashboard from "./components/Pages/Dashboard";
+import { ContextProvider } from "./context/ContextProvider";
 
 function App() {
 
@@ -20,7 +22,21 @@ function App() {
         />
         <Route path="/login" element={<LoginPage />}/>
         <Route path="/home" element={<Home />}/>
-        <Route path="/lg" element={<LoginPg />}/>
+        <Route path="/lg" 
+          element={
+            <ContextProvider>
+              <LoginPg />
+            </ContextProvider>
+          }
+        />
+        <Route path="/dashboard" 
+          element={
+            <ContextProvider>
+              <Dashboard />
+            </ContextProvider>
+          }
+        />
+        
       </Routes>
     </BrowserRouter>
   )

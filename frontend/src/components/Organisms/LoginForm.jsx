@@ -13,7 +13,7 @@ const LoginForm = () => {
     return(
         <form className="flex items-start space-x-0 items-center justify-center m-0" onSubmit={handleSubmit}>
 
-            <Imagen className="w-1/2 max-w-full h-auto p-12 m-0" src={imgLogo} alt="tUTORIA IMG"/>
+            <Imagen className="w-1/2 max-w-full h-19 p-12 m-0" src={imgLogo} alt="tUTORIA IMG"/>
             
             <div className="flex flex-col space-y-4 w-1/3 p-2 ">
                 <Label htmlFor="email" label="Correo Electrónico" className="text-3xl font-bold mb-4 text-center text-gray-900"/>
