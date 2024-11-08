@@ -24,8 +24,92 @@ export const ContextProvider = ({children}) =>{
         },
       ];
 
+      const peliculas = [
+        {
+          titulo: "The Godfather",
+          sinopsis: "The aging patriarch of an organized crime dynasty transfers control of his empire to his reluctant son."
+        },
+        {
+          titulo: "The Shawshank Redemption",
+          sinopsis: "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency."
+        },
+        {
+          titulo: "Schindler's List",
+          sinopsis: "In German-occupied Poland, a businessman saves the lives of over a thousand Jewish refugees during the Holocaust."
+        },
+        {
+          titulo: "The Dark Knight",
+          sinopsis: "Batman battles the Joker, a rising criminal mastermind intent on creating chaos in Gotham City."
+        },
+        {
+          titulo: "Pulp Fiction",
+          sinopsis: "The lives of two mob hitmen, a boxer, and others intertwine in four tales of violence and redemption."
+        },
+        {
+          titulo: "The Lord of the Rings: The Return of the King",
+          sinopsis: "The final battle for Middle-earth begins as Frodo and Sam approach Mount Doom to destroy the One Ring."
+        },
+        {
+          titulo: "Fight Club",
+          sinopsis: "A disillusioned man forms an underground fight club with a soap salesman, which evolves into something much more."
+        },
+        {
+          titulo: "Forrest Gump",
+          sinopsis: "The story of a man with a low IQ who accidentally becomes involved in several historical events."
+        },
+        {
+          titulo: "Inception",
+          sinopsis: "A thief who enters the dreams of others is given a chance to have his criminal history erased as payment for implanting an idea into a target's subconscious."
+        },
+        {
+          titulo: "The Matrix",
+          sinopsis: "A computer hacker learns about the true nature of his reality and his role in the war against its controllers."
+        },
+        {
+          titulo: "Goodfellas",
+          sinopsis: "The story of Henry Hill and his life in the mob, covering his relationship with his wife and his mob partners."
+        },
+        {
+          titulo: "The Silence of the Lambs",
+          sinopsis: "A young FBI cadet seeks the help of a manipulative cannibal killer to catch another serial killer."
+        },
+        {
+          titulo: "Saving Private Ryan",
+          sinopsis: "Following the Normandy Landings, a group of U.S. soldiers go behind enemy lines to retrieve a paratrooper whose brothers have been killed in action."
+        },
+        {
+          titulo: "Interstellar",
+          sinopsis: "A team of explorers travels through a wormhole in space in an attempt to ensure humanity's survival."
+        },
+        {
+          titulo: "The Green Mile",
+          sinopsis: "The lives of guards on Death Row are affected by one of their charges: a black man accused of child murder and rape, yet who has a mysterious gift."
+        },
+        {
+          titulo: "The Lion King",
+          sinopsis: "A young lion prince flees his kingdom after the death of his father, only to learn the true meaning of responsibility and bravery."
+        },
+        {
+          titulo: "Gladiator",
+          sinopsis: "A betrayed Roman general seeks revenge against the corrupt emperor who murdered his family and sent him into slavery."
+        },
+        {
+          titulo: "The Departed",
+          sinopsis: "An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in Boston."
+        },
+        {
+          titulo: "Whiplash",
+          sinopsis: "A promising young drummer enrolls at a music conservatory where his dreams are mentored by an instructor who pushes him to the limit."
+        },
+        {
+          titulo: "Parasite",
+          sinopsis: "Greed and class discrimination threaten the newfound relationship between a wealthy family and a poor household."
+        }
+      ];
+      
+
     return(
-        <ProviderContext.Provider value={{activeItem, setActiveItem, menuItems}}>
+        <ProviderContext.Provider value={{activeItem, setActiveItem, menuItems, peliculas}}>
             {children}
         </ProviderContext.Provider>
     )

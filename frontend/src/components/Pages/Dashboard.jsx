@@ -24,10 +24,8 @@ const Dashboard = () => {
       <NavBar />
       <div className="flex flex-1 overflow-hidden">
         <SideMenu />
-        <div className="flex-1">{renderContent()}</div>
-        <div className="w-1/4 overflow-y-auto bg-gray-50">
-          <h1 className="text-2xl font-bold p-4">hiola</h1>
-        </div>
+        <div className="flex-1 overflow-auto">{renderContent()}</div>
+        
       </div>
     </div>
   );
