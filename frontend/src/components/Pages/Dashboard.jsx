@@ -6,7 +6,7 @@ import NavBar from "../Molecules/NavBar";
 import { ProviderContext } from "../../context/ContextProvider";
 
 const Dashboard = () => {
-  const { activeItem } = useContext(ProviderContext);
+  const { activeItem, soliActived } = useContext(ProviderContext);
 
   const renderContent = () => {
     switch (activeItem) {
@@ -25,7 +25,6 @@ const Dashboard = () => {
       <div className="flex flex-1 overflow-hidden">
         <SideMenu />
         <div className="flex-1 overflow-auto">{renderContent()}</div>
-        
       </div>
     </div>
   );

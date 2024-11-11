@@ -4,6 +4,7 @@ export const ProviderContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [activeItem, setActiveItem] = useState("Inicio");
+  const [soliActived, setSoliActive] = useState(false);
   const menuItems = [
     {
       name: "Inicio",
@@ -271,7 +272,15 @@ export const ContextProvider = ({ children }) => {
 
   return (
     <ProviderContext.Provider
-      value={{ activeItem, setActiveItem, menuItems, peliculas, tutorias }}
+      value={{
+        activeItem,
+        setActiveItem,
+        menuItems,
+        peliculas,
+        tutorias,
+        soliActived,
+        setSoliActive,
+      }}
     >
       {children}
     </ProviderContext.Provider>

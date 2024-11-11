@@ -22,7 +22,7 @@ function App() {
           }
         />
         <Route
-          path="/dashboard"
+          path="/"
           element={
             <ContextProvider>
               <Dashboard />
