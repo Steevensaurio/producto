@@ -3,6 +3,7 @@ import Inicio from "../Organisms/Inicio";
 import Historial from "../Organisms/Historial";
 import SideMenu from "../Organisms/SideMenu";
 import NavBar from "../Molecules/NavBar";
+import SoliForm from "../Organisms/SoliForm";
 import { ProviderContext } from "../../context/ContextProvider";
 
 const Dashboard = () => {
@@ -24,7 +25,10 @@ const Dashboard = () => {
       <NavBar />
       <div className="flex flex-1 overflow-hidden">
         <SideMenu />
-        <div className="flex-1 overflow-auto">{renderContent()}</div>
+        <div className="flex-1 overflow-auto">
+          {soliActived === true ? <SoliForm /> : renderContent()}
+          
+        </div>
       </div>
     </div>
   );
