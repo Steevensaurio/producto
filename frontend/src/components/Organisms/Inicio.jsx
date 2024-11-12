@@ -9,7 +9,7 @@ const Inicio = () => {
 
   return (
     <div className="flex h-full overflow-auto">
-      <div className="flex-1 bg-blue-100 p-4">
+      <div className="flex-1 bg-white p-4">
         <h1 className="text-2xl font-bold mb-4">Contenido Principal</h1>
         <p>Este es el contenido principal en el lado izquierdo.</p>
 

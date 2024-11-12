@@ -27,7 +27,6 @@ const Dashboard = () => {
         <SideMenu />
         <div className="flex-1 overflow-auto">
           {soliActived === true ? <SoliForm /> : renderContent()}
-          
         </div>
       </div>
     </div>
