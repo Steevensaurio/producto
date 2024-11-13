@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MainWrapper from "./layouts/MainWrapper";
+import PrivateRoute from "./layouts/PrivateRoute";
+
 import LoginPage from "./views/LoginPage";
-import ProtectedRoute from "./components/ProtectedRoute";
-import StudentDashboard from "./views/StudentDashboard";
 import Home from "./views/Home";
 import LoginPg from "./components/Pages/LoginPg";
 import Dashboard from "./components/Pages/Dashboard";
@@ -10,26 +11,21 @@ import { ContextProvider } from "./context/ContextProvider";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/home" element={<Home />} />
-        <Route
-          path="/lg"
-          element={
-            <ContextProvider>
-              <LoginPg />
-            </ContextProvider>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <ContextProvider>
-              <Dashboard />
-            </ContextProvider>
-          }
-        />
-      </Routes>
+      <MainWrapper>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <ContextProvider>
+                  <Dashboard />
+                </ContextProvider>
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </MainWrapper>
     </BrowserRouter>
   );
 }

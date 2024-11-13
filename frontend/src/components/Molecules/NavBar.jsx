@@ -1,6 +1,8 @@
 import Button from "../Atoms/Button";
 import Input from "../Atoms/Input";
+import { logout } from "../../utils/auth";
 import tutologo from "../../assets/tutoeducalogo.png";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
@@ -40,20 +42,6 @@ const NavBar = () => {
           <Button className="bg-sky-600 min-w-auto p-2 mr-3 rounded-xl hover:bg-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-          </Button>
-          <Button className="bg-sky-600 min-w-auto p-2 mr-1 rounded-xl hover:bg-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5"
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -65,6 +53,14 @@ const NavBar = () => {
               ></path>
             </svg>
           </Button>
+
+          <Link
+            to="/login"
+            className="bg-sky-600 min-w-auto p-2 mr-1 rounded-xl hover:bg-white"
+            onClick={() => logout()}
+          >
+            Cerrar Sesiòn
+          </Link>
         </div>
       </div>
     </nav>
