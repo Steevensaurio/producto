@@ -1,22 +1,61 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { ProviderContext } from "../../context/ContextProvider";
+import Cookie from "js-cookie";
 import Input from "../Atoms/Input";
 import Label from "../Atoms/Label";
 import Button from "../Atoms/Button";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const SoliForm = () => {
-  const { peliculas } = useContext(ProviderContext);
-  const [titulo, setTitulo] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [curso, setCurso] = useState("");
-  const [modalidad, setModalidad] = useState("");
-  const [seccion, setSeccion] = useState("");
-  const [fecha, setFecha] = useState("");
-  const [comentario, setComentario] = useState("");
+  const { peliculas, setSoliActive, cargarTutorias } =
+    useContext(ProviderContext);
+
+  const [formData, setFormData] = useState({
+    tema: "",
+    descripcion: "",
+    curso: "",
+    modalidad: "",
+    seccion: "",
+    fecha: "",
+    comentario: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("hiciste click");
+    const accessToken = Cookie.get("access_token");
+
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/v1/user/solicitud/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (response.status === 201) {
+        setFormData({
+          nombre: "",
+          correo: "",
+          asunto: "",
+          mensaje: "",
+        });
+      }
+      setSoliActive(false);
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+      alert("Hubo un problema al enviar la solicitud");
+    }
   };
 
   return (
@@ -34,16 +73,17 @@ const SoliForm = () => {
           <div className="space-y-2">
             <Label
               className="text-2xl font-bold ml-3 mb-1 text-gray-900"
-              htmlFor="titulo"
+              htmlFor="tema"
               label="Tema"
             />
             <Input
-              id="titulo"
-              name="titulo"
+              id="tema"
+              name="tema"
               className="text-sm custom-input w-full px-4 py-2 mb-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out transform focus:-translate-y-1 focus:outline-blue-300 hover:shadow-lg hover:border-blue-300 bg-gray-100"
               type="text"
               placeholder="Ingrese el tema de la tutoría"
-              onChange={(e) => setTitulo(e.target.value)}
+              value={formData.nombre}
+              onChange={handleChange}
             />
           </div>
           <div className="space-y-2">
@@ -58,7 +98,8 @@ const SoliForm = () => {
               className="text-sm custom-input w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out transform focus:-translate-y-1 focus:outline-blue-300 hover:shadow-lg hover:border-blue-300 bg-gray-100"
               type="text"
               placeholder="descripcion"
-              onChange={(e) => setDescripcion(e.target.value)}
+              ovalue={formData.descripcion}
+              onChange={handleChange}
             />
           </div>
 
@@ -66,13 +107,15 @@ const SoliForm = () => {
             <div className="flex-1 space-y-2">
               <Label
                 className="text-xl font-bold ml-3 mb-1 text-gray-900"
-                htmlFor="descripcion"
+                htmlFor="curso"
                 label="Curso"
               />
               <select
-                name=""
-                id=""
+                name="curso"
+                id="curso"
                 className="text-sm custom-input w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out transform focus:-translate-y-1 focus:outline-blue-300 hover:shadow-lg hover:border-blue-300 bg-gray-100"
+                value={formData.curso}
+                onChange={handleChange}
               >
                 <option value="" className="text-gray-400" disabled selected>
                   Selecciona una opción
@@ -88,13 +131,15 @@ const SoliForm = () => {
             <div className="flex-1 space-y-2">
               <Label
                 className="text-xl font-bold ml-3 mb-1 text-gray-900"
-                htmlFor="descripcion"
+                htmlFor="modalidad"
                 label="Modalidad"
               />
               <select
-                name=""
-                id=""
+                name="modalidad"
+                id="modalidad"
                 className="text-sm custom-input w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out transform focus:-translate-y-1 focus:outline-blue-300 hover:shadow-lg hover:border-blue-300 bg-gray-100"
+                value={formData.modalidad}
+                onChange={handleChange}
               >
                 <option value="" className="text-gray-400" disabled selected>
                   Selecciona una opción
@@ -108,13 +153,15 @@ const SoliForm = () => {
             <div className="flex-1 space-y-2">
               <Label
                 className="text-xl font-bold ml-3 mb-1 text-gray-900"
-                htmlFor="descripcion"
+                htmlFor="seccion"
                 label="Sección"
               />
               <select
-                name=""
-                id=""
+                name="seccion"
+                id="seccion"
                 className="text-sm custom-input w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out transform focus:-translate-y-1 focus:outline-blue-300 hover:shadow-lg hover:border-blue-300 bg-gray-100"
+                value={formData.seccion}
+                onChange={handleChange}
               >
                 <option value="" className="text-gray-400" disabled selected>
                   Selecciona una opción
@@ -126,12 +173,16 @@ const SoliForm = () => {
             <div className="flex-1 space-y-2">
               <Label
                 className="text-xl font-bold ml-3 mb-1 text-gray-900"
-                htmlFor="descripcion"
+                htmlFor="fecha"
                 label="Fecha"
               />
               <Input
+                id="fecha"
+                name="fecha"
                 type="date"
                 className="text-sm custom-input w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out transform focus:-translate-y-1 focus:outline-blue-300 hover:shadow-lg hover:border-blue-300 bg-gray-100"
+                value={formData.fecha}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -146,6 +197,8 @@ const SoliForm = () => {
               name="comentario"
               id="comentario"
               className="text-sm custom-input w-full h-[120px] px-4 py-2 mb-4 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out transform focus:-translate-y-1 focus:outline-blue-300 hover:shadow-lg hover:border-blue-300 bg-gray-100"
+              value={formData.comentario}
+              onChange={handleChange}
             ></textarea>
           </div>
           <div className="flex justify-center">
@@ -162,13 +215,13 @@ const SoliForm = () => {
           <h1 className="text-2xl font-bold mb-4">Panel Lateral</h1>
           <p>Este es el contenido del panel lateral en el lado derecho.</p>
 
-          {peliculas.map((item) => (
+          {cargarTutorias.map((item) => (
             <div
-              key={item.titulo}
+              key={item.id}
               className="min-w-[250px] bg-green-200 rounded-xl p-3 mb-2"
             >
-              <h1 className="text-xl font-bold ml-1">{item.titulo}</h1>
-              <p className="text-sm ml-1">{item.sinopsis}</p>
+              <h1 className="text-xl font-bold ml-1">{item.tema}</h1>
+              <p className="text-sm ml-1">{item.descripcion}</p>
             </div>
           ))}
         </div>

@@ -2,6 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from userauth.models import Profile, User
+from api import models as api_models
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -9,37 +10,42 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        token['full_name'] = user.full_name
-        token['email'] = user.email
-        token['username'] = user.username
-        token['cedula'] = user.profile.cedula
-        token['rol'] = user.profile.rol
+        token["full_name"] = user.full_name
+        token["email"] = user.email
+        token["username"] = user.username
+        token["cedula"] = user.profile.cedula
+        token["rol"] = user.profile.rol
 
         return token
-    
+
+
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField(
+        write_only=True, required=True, validators=[validate_password]
+    )
     password2 = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ['full_name', 'email', 'password', 'password2']
-    
+        fields = ["full_name", "email", "password", "password2"]
+
     def validate(self, attr):
-        if attr['password'] != attr['password2']:
-            raise serializers.ValidationError({"password": "Password fields doesn´t match"})
-    
+        if attr["password"] != attr["password2"]:
+            raise serializers.ValidationError(
+                {"password": "Password fields doesn´t match"}
+            )
+
         return attr
 
     def create(self, validated_data):
         user = User.objects.create(
-            full_name=validated_data['full_name'],
-            email=validated_data['email'],
+            full_name=validated_data["full_name"],
+            email=validated_data["email"],
         )
 
         email_username, _ = user.email.split("@")
         user.username = email_username
-        user.set_password(validated_data['password'])
+        user.set_password(validated_data["password"])
         user.save()
 
         return user
@@ -48,9 +54,17 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = "__all__"
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = "__all__"
+
+
+class TutoriaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = api_models.Tutoria
+        fields = "__all__"
+        read_only_fields = ["autor"]

@@ -4,6 +4,7 @@ export const ProviderContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [activeItem, setActiveItem] = useState("Inicio");
+  const [cargarTutorias, setCargarTutorias] = useState([]);
   const [soliActived, setSoliActive] = useState(false);
   const menuItems = [
     {
@@ -280,6 +281,8 @@ export const ContextProvider = ({ children }) => {
         tutorias,
         soliActived,
         setSoliActive,
+        cargarTutorias,
+        setCargarTutorias,
       }}
     >
       {children}

@@ -39,7 +39,11 @@ const NavMenu = () => {
         </a>
       ))}
       <Button
-        className="w-full bg-purple-600 mb-4 p-2 rounded-lg hover:bg-purple-700"
+        className={
+          soliActived === true
+            ? "w-full bg-red-600 mb-4 p-2 rounded-lg hover:bg-red-700"
+            : "w-full text-white font-semibold bg-blue-600 mb-4 p-2 rounded-lg hover:bg-blue-700"
+        }
         label={
           soliActived === true ? "Cancelar Solicitud" : "Solicitar Tutoria"
         }

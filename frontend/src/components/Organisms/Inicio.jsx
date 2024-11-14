@@ -5,7 +5,7 @@ import reactlogo from "../../assets/react.svg";
 import Imagen from "../Atoms/Imagen";
 
 const Inicio = () => {
-  const { peliculas, tutorias } = useContext(ProviderContext);
+  const { peliculas, cargarTutorias } = useContext(ProviderContext);
 
   return (
     <div className="flex h-full overflow-auto">
@@ -13,23 +13,23 @@ const Inicio = () => {
         <h1 className="text-2xl font-bold mb-4">Contenido Principal</h1>
         <p>Este es el contenido principal en el lado izquierdo.</p>
 
-        {tutorias.map((tutoria) => (
+        {cargarTutorias.map((item) => (
           <div
-            key={tutoria.titulo}
+            key={item.id}
             className="flex items-center justify-between min-w-[250px] bg-green-200 rounded-xl p-3 mb-2"
           >
             <div className="flex-shrink-0 mr-3">
               <Imagen
                 src={reactlogo}
-                alt={`Imagen de ${tutoria.titulo}`}
+                alt={`Imagen de ${item.titulo}`}
                 className="min-h-[120px] min-w-[120px] rounded-lg object-cover p-2"
               />
             </div>
             <div className="flex-1">
-              <h1 className="text-xl font-bold ml-1">{tutoria.titulo}</h1>
-              <p className="text-sm ml-1">{tutoria.materia}</p>
-              <p className="text-sm ml-1">{tutoria.profesor}</p>
-              <p className="text-sm ml-1">{tutoria.descripcion}</p>
+              <h1 className="text-xl font-bold ml-1">{item.tema}</h1>
+              <p className="text-sm ml-1">{item.descripcion}</p>
+              <p className="text-sm ml-1">{item.fecha}</p>
+              <p className="text-sm ml-1">{item.seccion}</p>
             </div>
             <Button
               className="flex justify-end bg-purple-600 min-w-auto p-2 mr-1 rounded-xl hover:bg-white"
