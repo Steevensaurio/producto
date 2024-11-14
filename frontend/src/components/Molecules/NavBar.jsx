@@ -1,12 +1,11 @@
 import Button from "../Atoms/Button";
 import Input from "../Atoms/Input";
 import { logout } from "../../utils/auth";
-import tutologo from "../../assets/tutoeducalogo.png";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <nav className="bg-blue-100 shadow-md">
+    <nav className="bg-blue-200 shadow-md">
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <h1 className="text-2xl font-black text-gray-800 flex flex-col items-start justify-start py-1 ml-0 m-1">
           <span className="bg-yellow-300 border-4 border-yellow-400 h-9 px-4 w-28 rounded-t-lg transform rotate-3 flex items-center">

@@ -11,7 +11,7 @@ const NavMenu = () => {
         <a
           key={item.name}
           href="#"
-          className={`flex items-center mb-4 w-full p-2 rounded-lg transition-colors duration-200 ${
+          className={`flex font-bold items-center mb-4 w-full p-2 rounded-lg transition-colors duration-200 ${
             activeItem === item.name
               ? "bg-blue-400 text-white"
               : "text-gray-800 hover:bg-blue-400 hover:text-white"

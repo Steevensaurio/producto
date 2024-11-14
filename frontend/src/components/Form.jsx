@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../utils/auth";
-
-import imglogo from "../assets/react.svg";
-import imgn from "../assets/react.svg";
+import Label from "./Atoms/Label";
+import imglogo from "../assets/tutoriaImg.svg";
 import LoadingIndicator from "./LoadingIndicator";
 
 const Form = () => {
@@ -29,21 +28,28 @@ const Form = () => {
     <div className="min-h-screen flex items-center justify-center bg-blue-300 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl w-full space-y-8 flex bg-white rounded-3xl shadow-md overflow-hidden ">
         <div className="w-1/2 bg-white flex items-center justify-center p-12">
-          <img src={imgn} alt="Imagen de fondo" className="max-w-full h-auto" />
+          <img
+            src={imglogo}
+            alt="Imagen de fondo"
+            className="max-w-full h-full"
+          />
         </div>
         <div className="w-1/2 p-12">
-          <div className="mb-8">
-            <img src={imglogo} alt="Logo" className="h-16 w-auto mx-auto" />
-          </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <h1 className="text-3xl font-bold mb-4 text-center text-gray-900">
-              Iniciar sesion
+              ¡Te damos la bienvenida!
             </h1>
+
             <div>
+              <Label
+                className="text-lg font-semibold text-gray-900"
+                htmlFor="email"
+                label="Correo Electrónico"
+              />
               <input
                 id="email"
                 name="email"
-                className="w-full px-4 py-3 rounded-lg bg-gray-100 border-gray-300 focus:border-purple-500 focus:bg-white focus:ring-2 focus:ring-purple-200 text-base outline-none text-gray-700 leading-8 transition-colors duration-200 ease-in-out"
+                className="w-full px-4 py-2 rounded-lg bg-gray-100 border-gray-300 focus:border-purple-500 focus:bg-white focus:ring-2 focus:ring-purple-200 text-base outline-none text-gray-700 leading-8 transition-colors duration-200 ease-in-out"
                 type="email"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ejemplo@ejemplo.com"
@@ -51,10 +57,15 @@ const Form = () => {
               />
             </div>
             <div>
+              <Label
+                className="text-lg font-semibold text-gray-900"
+                htmlFor="password"
+                label="Contraseña"
+              />
               <input
                 id="password"
                 name="password"
-                className="w-full px-4 py-3 rounded-lg bg-gray-100 border-gray-300 focus:border-purple-500 focus:bg-white focus:ring-2 focus:ring-purple-200 text-base outline-none text-gray-700 leading-8 transition-colors duration-200 ease-in-out"
+                className="w-full px-4 py-2 rounded-lg bg-gray-100 border-gray-300 focus:border-purple-500 focus:bg-white focus:ring-2 focus:ring-purple-200 text-base outline-none text-gray-700 leading-8 transition-colors duration-200 ease-in-out"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
