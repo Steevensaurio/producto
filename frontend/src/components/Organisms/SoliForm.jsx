@@ -59,10 +59,10 @@ const SoliForm = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full h-full bg-purple-200 overflow-hidden">
-      <div className="w-full md:w-1/2 flex flex-col h-full ">
-        <div className="flex items-center bg-yellow-200 h-14 shrink-0">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 m-3">
+    <div className="flex flex-col md:flex-row w-full h-full bg-white overflow-hidden ">
+      <div className="w-full md:w-2/3 flex flex-col h-full border-l-4 border-blue-400">
+        <div className="flex items-center bg-blue-400 h-10 shrink-0">
+          <h1 className="text-2xl md:text-2xl font-bold text-gray-800 m-3">
             Nueva Solicitud de Tutoría
           </h1>
         </div>
@@ -72,7 +72,7 @@ const SoliForm = () => {
         >
           <div className="space-y-2">
             <Label
-              className="text-2xl font-bold ml-3 mb-1 text-gray-900"
+              className="text-lg font-bold ml-2 mb-1 text-gray-900"
               htmlFor="tema"
               label="Tema"
             />
@@ -88,7 +88,7 @@ const SoliForm = () => {
           </div>
           <div className="space-y-2">
             <Label
-              className="text-xl font-bold ml-3 mb-1 text-gray-900"
+              className="text-lg font-bold ml-2 mb-1 text-gray-900"
               htmlFor="descripcion"
               label="Descripcion"
             />
@@ -106,7 +106,7 @@ const SoliForm = () => {
           <div className="flex gap-4">
             <div className="flex-1 space-y-2">
               <Label
-                className="text-xl font-bold ml-3 mb-1 text-gray-900"
+                className="text-lg font-bold ml-2 mb-1 text-gray-900"
                 htmlFor="curso"
                 label="Curso"
               />
@@ -130,7 +130,7 @@ const SoliForm = () => {
             </div>
             <div className="flex-1 space-y-2">
               <Label
-                className="text-xl font-bold ml-3 mb-1 text-gray-900"
+                className="text-lg font-bold ml-3 mb-1 text-gray-900"
                 htmlFor="modalidad"
                 label="Modalidad"
               />
@@ -152,7 +152,7 @@ const SoliForm = () => {
           <div className="flex gap-4">
             <div className="flex-1 space-y-2">
               <Label
-                className="text-xl font-bold ml-3 mb-1 text-gray-900"
+                className="text-lg font-bold ml-3 mb-1 text-gray-900"
                 htmlFor="seccion"
                 label="Sección"
               />
@@ -172,7 +172,7 @@ const SoliForm = () => {
             </div>
             <div className="flex-1 space-y-2">
               <Label
-                className="text-xl font-bold ml-3 mb-1 text-gray-900"
+                className="text-lg font-bold ml-3 mb-1 text-gray-900"
                 htmlFor="fecha"
                 label="Fecha"
               />
@@ -188,7 +188,7 @@ const SoliForm = () => {
           </div>
           <div className="space-y-2">
             <Label
-              className="text-xl font-bold ml-3 mb-1 text-gray-900"
+              className="text-lg font-bold ml-3 mb-1 text-gray-900"
               htmlFor="comentario"
               label="Comentario"
             />
@@ -212,13 +212,12 @@ const SoliForm = () => {
       </div>
       <div className="w-full md:w-1/2 bg-gray-50 p-4 overflow-y-auto h-full">
         <div className="w-full min-w-[250px] bg-gray-50 p-4">
-          <h1 className="text-2xl font-bold mb-4">Panel Lateral</h1>
-          <p>Este es el contenido del panel lateral en el lado derecho.</p>
+          <h1 className="text-2xl font-bold mb-4">Proximas tutorías</h1>
 
           {cargarTutorias.map((item) => (
             <div
               key={item.id}
-              className="min-w-[250px] bg-green-200 rounded-xl p-3 mb-2"
+              className="min-w-[250px] bg-blue-200 rounded-xl p-3 mb-2"
             >
               <h1 className="text-xl font-bold ml-1">{item.tema}</h1>
               <p className="text-sm ml-1">{item.descripcion}</p>

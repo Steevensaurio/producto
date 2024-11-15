@@ -10,13 +10,12 @@ const Inicio = () => {
   return (
     <div className="flex h-full overflow-auto">
       <div className="flex-1 bg-white p-4">
-        <h1 className="text-2xl font-bold mb-4">Contenido Principal</h1>
-        <p>Este es el contenido principal en el lado izquierdo.</p>
+        <h1 className="text-2xl font-bold mb-4">Bienvenido</h1>
 
         {cargarTutorias.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between min-w-[250px] bg-green-200 rounded-xl p-3 mb-2"
+            className="flex items-center justify-between min-w-[250px] bg-blue-200 rounded-xl p-3 mb-2"
           >
             <div className="flex-shrink-0 mr-3">
               <Imagen
