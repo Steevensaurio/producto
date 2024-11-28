@@ -11,3 +11,6 @@ class Tutoria(models.Model):
     fecha = models.DateField()
     comentario = models.CharField(max_length=100)
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+class Curso(models.Model):
+    pass

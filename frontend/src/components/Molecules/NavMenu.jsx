@@ -1,56 +1,83 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ProviderContext } from "../../context/ContextProvider";
-import Button from "../Atoms/Button";
 
 const NavMenu = () => {
-  const { menuItems, activeItem, setActiveItem, soliActived, setSoliActive } =
-    useContext(ProviderContext);
+  const { menuItems, activeItem, setActiveItem, subItem, setSubItem} = useContext(ProviderContext);
+
+  const handleClick = (item) => {
+    setActiveItem(activeItem === item ? null : item);
+  };
+
+  
+
   return (
     <nav>
+
       {menuItems.map((item) => (
-        <a
-          key={item.name}
-          href="#"
-          className={`flex font-bold items-center mb-4 w-full p-2 rounded-lg transition-colors duration-200 ${
-            activeItem === item.name
-              ? "bg-blue-400 text-white"
-              : "text-gray-800 hover:bg-blue-400 hover:text-white"
-          }`}
-          onClick={() => setActiveItem(item.name)}
-        >
-          <svg
-            className="w-5 h-5 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+        <div className="w-full max-w-sm mx-auto mb-2" key={item.name}>
+          <button
+            href="#"
+            className={`flex font-bold items-center  w-full p-2 rounded-lg transition-all duration-300 ease-in-out ${
+              activeItem === item.name
+                ? 'bg-blue-600 text-white rounded-t-lg rounded-b-none'
+                : 'bg-blue-200 text-blue-800 rounded-lg'
+            } hover:bg-blue-400 hover:text-white`}
+
+            onClick={(e) => {
+              e.preventDefault();
+              handleClick(item.name)
+            }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d={item.icon}
-            />
-          </svg>
-          <span>{item.name}</span>
+            <svg
+              className="w-6 h-6 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={item.icon}
+              />
+              {item.name === "Configuración" ? <circle cx="12" cy="12" r="3" /> : null}
+            </svg>
+            <span>{item.name}</span>
+            
+            {activeItem === item.name && (
+              <div className="ml-auto w-2 h-2 bg-white rounded-full"></div>
+            )}
+          </button>
+
           {activeItem === item.name && (
-            <div className="ml-auto w-2 h-2 bg-white rounded-full"></div>
+            <div
+              id="menu-items"
+              className={`bg-blue-200 transition-all duration-300 ease-in-out p-2 ${
+                activeItem === item.name 
+                ? 'max-h-96 opacity-100 transform scale-y-100' 
+                : 'max-h-0 opacity-0 transform scale-y-0'
+              } overflow-hidden rounded-b-lg mb-1 origin-top transform`}
+            >
+              {(item.options).map((option) =>(
+                <button
+                  href="#"
+                  key={option.id}
+                  className="flex font-semibold items-center mt-1 mb-1 w-full p-2 rounded-lg transition-colors duration-200 bg-blue-400 text-white hover:bg-blue-500"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSubItem(option.id) 
+                  }}
+                >
+                  
+                  {option.label}
+                </button>
+              ))}
+            </div>
           )}
-        </a>
+          
+        </div>
       ))}
-      <Button
-        className={
-          soliActived === true
-            ? "w-full bg-red-600 mb-4 p-2 rounded-lg hover:bg-red-700"
-            : "w-full text-white font-semibold bg-blue-600 mb-4 p-2 rounded-lg hover:bg-blue-700"
-        }
-        label={
-          soliActived === true ? "Cancelar Solicitud" : "Solicitar Tutoria"
-        }
-        onClick={() =>
-          soliActived === true ? setSoliActive(false) : setSoliActive(true)
-        }
-      />
     </nav>
   );
 };

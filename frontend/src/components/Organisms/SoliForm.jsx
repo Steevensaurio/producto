@@ -8,9 +8,8 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const SoliForm = () => {
-  const { peliculas, setSoliActive, cargarTutorias } =
-    useContext(ProviderContext);
-
+  const {setSoliActive, cargarTutorias } = useContext(ProviderContext);
+  const [minFecha, setMinFecha] = useState("");
   const [formData, setFormData] = useState({
     tema: "",
     descripcion: "",
@@ -20,6 +19,13 @@ const SoliForm = () => {
     fecha: "",
     comentario: "",
   });
+
+  //hook para validar que la entrada de datos para la solicitud de las tutorias sea dos dias despues de la fecha actual
+  useEffect(()=>{
+    const today = new Date()
+    const fechaMin = new Date(today.setDate(today.getDate() + 2))
+    setMinFecha(fechaMin.toISOString().split('T')[0])
+  }, [])
 
   const handleChange = (e) => {
     setFormData({
@@ -180,6 +186,7 @@ const SoliForm = () => {
                 id="fecha"
                 name="fecha"
                 type="date"
+                min={minFecha}
                 className="text-sm custom-input w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out transform focus:-translate-y-1 focus:outline-blue-300 hover:shadow-lg hover:border-blue-300 bg-gray-100"
                 value={formData.fecha}
                 onChange={handleChange}
