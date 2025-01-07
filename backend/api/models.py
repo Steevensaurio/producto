@@ -56,7 +56,7 @@ class Tutor(models.Model):
     id_user_FK = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='tutores_usuarios')
     
     def __str__(self):
-        return f'{self.nivel_estudios}. {self.id_user_FK.get_full_name()}'
+        return f'{self.nivel_estudios}. {self.id_user_FK.full_name}'
     
     class Meta:
         db_table='tutor'

@@ -28,6 +28,7 @@ export const ContextProvider = ({ children }) => {
         options: [
           { id: "tutor1", label: "Registrar tutor" },
           { id: "tutor2", label: "Listado" },
+          { id: "tutor3", label: "Carga Horaria" },
         ],
       },
       {

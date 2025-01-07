@@ -125,6 +125,16 @@ class OpcionesParalelosListView(generics.ListAPIView):
 class OpcionesTitulosListView(generics.ListAPIView):
     queryset = opcionTitulos.objects.all()
     serializer_class = api_serializer.OpcionTitulosSerializer
+    
+    
+########################################   
+###  Vistas para listar las tutores  ###
+########################################
+ 
+class TutoresListView(generics.ListAPIView):
+    queryset = Tutor.objects.all()
+    serializer_class = api_serializer.TutorListSerializer
+    
 
 #Vista para matriculas
 

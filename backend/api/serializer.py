@@ -22,6 +22,17 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
 
+#################################
+###  Serializador de Usuario  ###
+#################################
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'username', 'email', 'full_name', 'estado', 'cedula', 
+            'genero', 'fecha_nacimiento', 'telefono', 'id_perfil_FK'
+        ] 
 
 #############################################  
 ###  Serializador de Registro de Usuario  ###
@@ -68,6 +79,7 @@ class RegistroUsuarioTutorSerializer(serializers.Serializer):
             email=user_data['email'],
             full_name=user_data['full_name'],
             estado=user_data['estado'],
+            cedula=user_data['cedula'],
             genero=user_data['genero'],
             id_perfil_FK=user_data['id_perfil_FK'], 
             telefono=user_data['telefono'],
@@ -246,3 +258,19 @@ class OpcionTitulosSerializer(serializers.ModelSerializer):
     class Meta:
         model = api_models.opcionTitulos
         fields = '__all__'
+        
+        
+#################################  
+### Modulo de Listar Tutores  ###
+#################################  
+
+class TutorListSerializer(serializers.ModelSerializer):
+    id_user_FK = UserSerializer()  # Campo anidado para el usuario relacionado
+
+    class Meta:
+        model = api_models.Tutor
+        fields = [
+            'id', 'nivel_estudios', 'especializacion', 'años_experiencia', 
+            'certificaciones', 'id_user_FK'
+        ] 
+        

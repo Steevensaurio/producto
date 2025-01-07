@@ -44,14 +44,18 @@ const ListadoTutores = () => {
     
     const statusBodyTemplate = (tutor) => {
         return (
-            <Tag value={tutor.estado} severity={getSeverity(tutor.estado)} />
+            <Tag value={tutor.id_user_FK.estado} severity={getSeverity(tutor.id_user_FK.estado)} />
         );
+    };
+
+    const fullNameBodyTemplate = (rowData) => {
+        return rowData.id_user_FK ? rowData.id_user_FK.full_name : "No disponible";
     };
 
     return(
         <div className="flex flex-col h-screen contenedor">
           <div>
-            <h1 className="text-2xl font-bold mt-4 mb-4">Listado de Estudiantes</h1>
+            <h1 className="text-2xl font-bold mt-4 mb-4">Listado de Tutores</h1>
             <div className="flex-1 overflow-y-auto">
               <DataTable
                 value={tutor}
@@ -59,9 +63,9 @@ const ListadoTutores = () => {
                 tableStyle={{ minWidth: "60rem" }}
                 style={{ width: "100%" }}
               >
-                <Column field="nombre" header="Nombre"></Column>
+                <Column header="Nombre Completo" body={fullNameBodyTemplate} />
                 <Column
-                  field="estado"
+                  field="id_user_FK.estado"
                   header="Estado"
                   body={statusBodyTemplate}
                 ></Column>

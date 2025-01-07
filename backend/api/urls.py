@@ -20,7 +20,7 @@ urlpatterns = [
     #Tutores
     path("tutor/registrar/", api_views.RegistroUsuarioTutorView.as_view(), name="registrar-tutor"),
     # path("tutor/editar/", api_views.TutorView.as_view()),
-    # path("tutor/listado/", api_views.TutorListView.as_view()),
+    path("tutor/listado/", api_views.TutoresListView.as_view()),
     
     #Representantes
     path("representante/registrar/", api_views.RegistroUsuarioRepresentanteView.as_view(), name="registrar-representante"),
