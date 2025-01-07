@@ -4,6 +4,7 @@ import { login } from "../utils/auth";
 import Label from "./Atoms/Label";
 import imglogo from "../assets/tutoriaImg.svg";
 import LoadingIndicator from "./LoadingIndicator";
+import Swal from 'sweetalert2';
 
 const Form = () => {
   const [email, setEmail] = useState("");
@@ -17,7 +18,12 @@ const Form = () => {
     const { error } = await login(email, password);
     if (error) {
       setIsLoading(false);
-      alert(error);
+      Swal.fire({
+        icon: 'error', // Icono de error
+        title: 'Error',
+        text: 'Correo o contreña incorrectos.',
+        confirmButtonText: 'OK',
+      });
     } else {
       navigate("/");
       setIsLoading(false);

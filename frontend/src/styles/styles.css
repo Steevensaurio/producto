@@ -1,0 +1,22 @@
+.custom-table .p-datatable-thead > tr > th  {
+    background-color: #f2f2f2 !important; /* Cambiar el color de fondo */
+  };
+
+.requerido::after {
+    content: " *";
+    color: black;
+    font-weight: bold;
+}
+
+
+label.requerido::after {
+    content: " *";
+    color: black;
+    font-weight: bold;
+}
+
+.contenedor {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
