@@ -8,6 +8,7 @@ import ListadoTutorias from "../Organisms/ListadoTutorias";
 import RegistroRepresentante from "../Organisms/RegistroRepresentante";
 import RegistroTutor from "../Organisms/RegistroTutor";
 import Matriculas from "../Organisms/Matriculas";
+import ListadoMatriculas from "../Organisms/ListadoMatriculas";
 import CrearCurso from "../Organisms/CrearCurso";
 import ListadoCurso from "../Organisms/ListadoCurso";
 import ListadoEstudiantes from "../Organisms/ListadoEstudiantes";
@@ -16,6 +17,7 @@ import ListadoTutores from "../Organisms/ListadoTutores";
 import NavBar from "../Molecules/NavBar";
 import { ProviderContext } from "../../context/ContextProvider";
 import ListadoAsignaturas from "../Organisms/ListadoAsignaturas";
+import Inscripciones from "../Organisms/Inscripciones";
 
 const Dashboard = () => {
   const {itemActive} = useContext(ProviderContext);
@@ -28,6 +30,8 @@ const Dashboard = () => {
       //Modulo Matriculas
       case "matriculas1":
         return <Matriculas/>;
+      case "matriculas2":
+        return <ListadoMatriculas/>;
 
       //Modulo Tutores
       case "asignatura1":
@@ -57,7 +61,7 @@ const Dashboard = () => {
       case "tutoria2":
         return <ListadoTutorias/>
       case "tutoria3":
-        return <div>Tutoria 3</div>
+        return <Inscripciones/>
       
       //Modulo Representantes
       case "padre1":

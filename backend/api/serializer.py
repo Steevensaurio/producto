@@ -205,11 +205,10 @@ class AsignaturaSerializer(serializers.ModelSerializer):
 
 class TutoriaSerializer(serializers.ModelSerializer):
     
-    id_tutor_FK = serializers.PrimaryKeyRelatedField(queryset=api_models.Tutor.objects.all())
     
     class Meta:
         model = api_models.Tutoria
-        fields = ['tema', 'descripcion', 'modalidad', 'seccion', 'fecha', 'tipo', 'estado', 'id_tutor_FK'] 
+        fields = '__all__'
         
 
 ###############################

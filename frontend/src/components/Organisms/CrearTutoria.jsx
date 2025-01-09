@@ -8,23 +8,11 @@ const CrearTutoria = () => {
     const [modalidad, setModalidad] = useState('');
     const [seccion, setSeccion] = useState('');
     const [fecha, setFecha] = useState('');
-    const [curso, setCurso] = useState();
+    const [hora, setHora] = useState('');
+    const [tipo, setTipo] = useState('');
     const [asignarTutor, setAsignarTutor] = useState();
 
-    const [getCursos, setGetCursos] = useState([]);
     const [getTutores, setGetTutores] = useState([]);
-
-    useEffect(()=>{
-        const cursos = async () => {
-            try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/curso/listado/');
-                setGetCursos(response.data)
-            } catch (error){
-                console.log(error);
-            }
-        }
-        cursos();
-    }, [])
 
     useEffect(()=>{
         const tutores = async () => {
@@ -47,7 +35,8 @@ const CrearTutoria = () => {
             modalidad,
             seccion,
             fecha,
-            curso,
+            hora,
+            tipo,
             asignarTutor,
         ];
         if (fields.some(field => field.trim() === '')) {
@@ -65,31 +54,36 @@ const CrearTutoria = () => {
             modalidad,
             seccion,
             fecha,
+            hora,
+            tipo,
             tutor: asignarTutor,
-            curso 
         };
+
+        console.log(tutoria);
+        
 
         axios.post('http://127.0.0.1:8000/api/v1/tutoria/asignar/', tutoria)
           .then(response => {
             console.log('Curso creado:', response.data);
 
+            Swal.fire({
+                icon: 'success',
+                title: 'Registro exitoso',
+                text: 'Tutoria creada exitosamente.',
+            });
 
             setTema('')
             setDescripcion('')
             setModalidad('')
             setSeccion('')
             setFecha('')
-            setCurso('')
+            setHora('')
+            setTipo('')
             setAsignarTutor('')
-            
-            Swal.fire({
-                icon: 'success',
-                title: 'Registro exitoso',
-                text: 'Tutoria creada exitosamente.',
-            });
-            
           })
           .catch(error => {
+            console.log(error);
+            
             Swal.fire({
                 icon: 'error', // Icono de error
                 title: 'Error al crear la tutoria',
@@ -100,9 +94,6 @@ const CrearTutoria = () => {
 
     }
 
-    const handleCursoChange = (e) => {
-        setCurso(e.target.value)
-    }
     const handleTutorChange = (e) => {
         setAsignarTutor(e.target.value)
     }
@@ -174,18 +165,25 @@ const CrearTutoria = () => {
                                 />
                             </div>
                             <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Curso</label>
+                                <label className="block text-sm font-medium">Hora</label>
+                                <input 
+                                    type="time"
+                                    className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    value={hora}
+                                    onChange={(e) => setHora(e.target.value)}
+                                />
+                            </div>
+                            <div className="flex-1 space-y-2">
+                                <label className="block text-sm font-medium">Tipo</label>
                                 <select 
                                     className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    onChange={handleCursoChange}
-                                    value={curso}
+                                    value={tipo}
+                                    onChange={(e) => setTipo(e.target.value)}
+                                    required
                                 >
-                                    <option value="" hidden>Seleccione el curso</option>
-                                    {getCursos.map(course => (
-                                        <option key={course.id} value={course.id}>
-                                            {course.curso} "{course.paralelo}"
-                                        </option>
-                                    ))}
+                                    <option value="" hidden>Seleccione una opción</option>
+                                    <option value="Grupal">Grupal</option>
+                                    <option value="Individual">Individual</option>
                                 </select>
                             </div>
                         </div>
@@ -200,10 +198,11 @@ const CrearTutoria = () => {
                                 <option value="" hidden >Seleccione un tutor</option>
                                 {getTutores.map(tutor => (
                                     <option key={tutor.id} value={tutor.id}>
-                                        {tutor.titulo}. {tutor.nombre}
+                                        {tutor.nivel_estudios}. {tutor.id_user_FK.full_name}
                                     </option>
                                 ))}
                             </select>
+                            <h1>{asignarTutor}</h1>
                         </div>
                         
                     </form>

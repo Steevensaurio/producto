@@ -170,10 +170,11 @@ class Matriculas(models.Model):
 class Tutoria(models.Model):
     
     tema = models.CharField(max_length=100)
-    descripcion = models.CharField(max_length=100)
+    descripcion = models.CharField(null=True, blank=True)
     modalidad = models.CharField(max_length=100, choices=[('Presencial', 'Presencial'), ('Virtual', 'Virtual')])
     seccion = models.CharField(max_length=10, choices=[('Matutina', 'Matutina'), ('Vespertina', 'Vespertina')], default='Matutina')
     fecha = models.DateField()
+    hora = models.TimeField(null=True)
     tipo = models.CharField(
         max_length=10,
         choices=[
@@ -195,7 +196,8 @@ class Tutoria(models.Model):
             ('Pendiente', 'Pendiente'),
         ],
         null=True,
-        blank=True
+        blank=True,
+        default='Programada'
     )
     
     id_tutor_FK = models.ForeignKey(Tutor, on_delete=models.SET_NULL, null=True, blank=True)
@@ -226,7 +228,7 @@ class InscripcionTutoria(models.Model):
     id_tutoria_FK = models.ForeignKey(Tutoria, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
-        return f'{self.id_estudiante_FK.id_user_FK.get_full_name()} --> {self.id_tutoria_FK.tema}'
+        return f'{self.id_estudiante_FK.id_user_FK.full_name} --> {self.id_tutoria_FK.tema}'
 
     class Meta: 
         db_table='inscripcion-tutoria'

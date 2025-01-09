@@ -210,7 +210,17 @@ class MatriculaListView(generics.ListAPIView):
     serializer_class = api_serializer.MatriculasListSerializer
 
     def get_queryset(self):
-        curso_id = self.request.query_params.get('curso', None)  # Obtener el parámetro del curso
+        curso_id = self.request.query_params.get('curso', None)  # Parámetro para el curso
+        seccion = self.request.query_params.get('seccion', None)  # Parámetro para la sección
+
+        queryset = Matriculas.objects.all()
+
+        # Filtrar por curso si se proporciona el parámetro
         if curso_id:
-            return Matriculas.objects.filter(curso_id=curso_id)  # Filtrar por curso
-        return Matriculas.objects.all()  
+            queryset = queryset.filter(id_curso_FK=curso_id)
+
+        # Filtrar por sección si se proporciona el parámetro
+        if seccion:
+            queryset = queryset.filter(jornada=seccion)
+
+        return queryset
