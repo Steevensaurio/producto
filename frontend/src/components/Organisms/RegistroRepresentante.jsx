@@ -1,23 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
 
 const RegistroRepresentante = () => {
+
+    // CAMPOS USUARIO //
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
-
+    const estado = "Activo"
     const [cedula, setCedula] = useState('');
-    const [ciudad, setCiudad] = useState('');
     const [genero, setGenero] = useState('');
+    const [fechaNacimiento, setFechaNacimiento] = useState('');
     const [telefono, setTelefono] = useState('');
+    const perfil = 3
+
+    //CAMPOS DE REPRESENTANTE
     const [parentesco, setParentesco] = useState('');
+    const [ocupacion, setOcupacion] = useState('');
+    const [nivelEstudios, setNivelEstudios] = useState('');
+    const [telefonoAuxiliar, setTelefonoAuxiliar] = useState('')
+
+
 
     const [passwordsMatch, setPasswordsMatch] = useState(false);
-
-    const perfil = 3
-    const estado = "Activo"
+    const [getNivelesEstudio, setGetNivelesEstudio] = useState([]);
+    
+    useEffect(()=>{
+        const niveles = async () => {
+            try{
+                const response = await axios.get('http://127.0.0.1:8000/api/v1/niveles/');
+                setGetNivelesEstudio(response.data)
+            } catch (error){
+                console.log(error);
+            }
+        }
+        niveles()
+    }, [])
 
     const validarCedulaEcuatoriana = (cedula) => {
         if (!/^\d{10}$/.test(cedula)) return false;
@@ -35,7 +55,10 @@ const RegistroRepresentante = () => {
 
         return digitoVerificador === verificador;
     };
-    
+
+    const handleNivelChange = (e) => {
+        setNivelEstudios(e.target.value)
+    }
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -45,10 +68,12 @@ const RegistroRepresentante = () => {
             password,
             password2,
             cedula,
-            ciudad,
             genero,
+            fechaNacimiento,
             telefono,
             parentesco,
+            ocupacion,
+            nivelEstudios,
         ];
         if (fields.some(field => field.trim() === '')) {
             Swal.fire({
@@ -82,18 +107,23 @@ const RegistroRepresentante = () => {
             email,
             password,
             password2,
-            perfil,
             estado,
+            cedula,
             genero,
+            fecha_nacimiento: fechaNacimiento,
+            telefono,
+            id_perfil_FK: perfil,
         };
 
         const representante = {
             parentesco,
-            cedula,
-            estado,
-            ciudad,
-            telefono,
+            ocupacion,
+            nivel_estudios: nivelEstudios,
+            telefono_auxiliar: telefonoAuxiliar,
         }
+
+        console.log({user, representante});
+        
     
         axios.post('http://127.0.0.1:8000/api/v1/representante/registrar/', {user, representante})
           .then(response => {
@@ -104,10 +134,13 @@ const RegistroRepresentante = () => {
             setPassword('')
             setPassword2('')
             setCedula('')
-            setCiudad('')
             setGenero('')
+            setFechaNacimiento('')
             setTelefono('')
             setParentesco('')
+            setOcupacion('')
+            setNivelEstudios('')
+            setTelefonoAuxiliar('')
 
             Swal.fire({
                 icon: 'success',
@@ -117,8 +150,12 @@ const RegistroRepresentante = () => {
             
           })
           .catch(error => {
-            console.error('Error:', error);
-            alert(error.response.data)
+            console.log(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en el registro',
+                text: 'Ocurrió un error al registrar al representante.',
+            });
           });
     };
     
@@ -129,7 +166,7 @@ const RegistroRepresentante = () => {
                 Registrar nuevo representante
             </h1>
             <div className="flex">
-                <div className="bg-white shadow-md rounded-lg p-6 mb-1 flex-grow mr-6">
+                <div className="bg-white border border-gray-300 shadow-md rounded-lg p-6 mb-1 flex-grow mr-6">
                     <form  className="space-y-6">
                         <div className="flex space-x-4">
                             <div className="flex-1 space-y-2">
@@ -142,19 +179,7 @@ const RegistroRepresentante = () => {
                                     onChange={(e) => setFullName(e.target.value)}
                                 />
                             </div>
-                            <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Parentesco</label>
-                                <input 
-                                    type="text" 
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="(Padre, Madre, etc.)"
-                                    value={parentesco}
-                                    onChange={(e) => setParentesco(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                        <div className="flex space-x-4">
-                            <div className="flex-1 space-y-2">
+                            <div className="space-y-2">
                                 <label className="block text-sm font-medium">Cedula</label>
                                 <div className="relative">
                                     <input 
@@ -162,7 +187,7 @@ const RegistroRepresentante = () => {
                                         className={`text-sm custom-input w-full px-4 py-1 border rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                                             cedula && !validarCedulaEcuatoriana(cedula) ? 'border-red-500' : 'border-gray-300'
                                         }`}
-                                        placeholder="Ingrese el número de cédula"
+                                        placeholder="Ingrese la cédula"
                                         value={cedula}
                                         maxLength={10}
                                         onChange={(e) => {
@@ -182,6 +207,18 @@ const RegistroRepresentante = () => {
                                     <p className="text-red-500 text-xs mt-1">Cédula inválida</p>
                                 )}
                             </div>
+                            <div className=" space-y-2">
+                                <label className="block text-sm font-medium">Parentesco</label>
+                                <input 
+                                    type="text" 
+                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="(Padre, Madre, etc.)"
+                                    value={parentesco}
+                                    onChange={(e) => setParentesco(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex space-x-4">
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Genero</label>
                                 <select 
@@ -195,31 +232,71 @@ const RegistroRepresentante = () => {
                                     <option value="Femenino">Femenino</option>
                                 </select>
                             </div>
-                        </div>
-                        <div className="flex space-x-4">
                             <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Ciudad</label>
+                                <label className="block text-sm font-medium">Fecha de Nacimiento</label>
                                 <input 
-                                    type="text" 
+                                    type="date" 
                                     className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    value={ciudad}
-                                    placeholder="Ingrese la ciudad natal"
-                                    onChange={(e) => setCiudad(e.target.value)}
+                                    value={fechaNacimiento}
+                                    onChange={(e) => setFechaNacimiento(e.target.value)}
                                 />
                             </div>
                             <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Telefono / Celular</label>
+                                <label className="block text-sm font-medium">Telefono</label>
                                 <input 
                                     type="text" 
                                     className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     value={telefono}
-                                    placeholder="Ingrese el numero de telefono"
+                                    placeholder="Ingresar número de telefono"
                                     maxLength={10}
                                     onChange={(e) =>{
                                         const onlyNums = e.target.value.replace(/[^0-9]/g, '');
                                         setTelefono(onlyNums);
                                     }}
                                 />
+                            </div>
+                            <div className="flex-1 space-y-2">
+                                <label className="block text-sm font-medium">Telefono Auxiliar</label>
+                                <input 
+                                    type="text" 
+                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    value={telefonoAuxiliar}
+                                    placeholder="Ingresar telefono auxiliar"
+                                    maxLength={10}
+                                    onChange={(e) =>{
+                                        const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+                                        setTelefonoAuxiliar(onlyNums);
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex space-x-4">
+                            <div className="flex-1 space-y-2">
+                                <label className="block text-sm font-medium">Ocupacion</label>
+                                <input 
+                                    type="text" 
+                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    value={ocupacion}
+                                    placeholder="Ingrese la ocupacion"
+                                    onChange={(e) => setOcupacion(e.target.value)}
+                                />
+                            </div>
+                            <div className="flex-1 space-y-2">
+                                <label className="block text-sm font-medium">Nivel Estudios</label>
+                                <select 
+                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    value={nivelEstudios}
+                                    onChange={handleNivelChange}
+                                    required
+                                >
+                                    <option value="" hidden >Seleccione el nivel de estudios</option>
+                                    {getNivelesEstudio.map(titulo => (
+                                        <option key={titulo.id} value={titulo.codigo}>
+                                            {titulo.nivel}
+                                        </option>
+                                        
+                                    ))}
+                                </select>
                             </div>
                         </div>
                         <div className="space-y-2">

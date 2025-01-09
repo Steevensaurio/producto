@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import PhoneInput from 'react-phone-input-2'
+
 
 
 const RegistroTutor = () => {
@@ -16,7 +18,7 @@ const RegistroTutor = () => {
     const [fechaNacimiento, setFechaNacimiento] = useState('');
     const [telefono, setTelefono] = useState('');
     const perfil = 2
-
+    
     // CAMPOS TUTOR //
 
     const [nivelEstudios, setNivelEstudios] = useState('');
@@ -136,15 +138,20 @@ const RegistroTutor = () => {
             Swal.fire({
                 icon: 'success',
                 title: 'Registro exitoso',
-                text: 'Representante registrado exitosamente.',
+                text: 'Tutor registrado exitosamente.',
             });
             
 
             
           })
           .catch(error => {
-            console.error('Error:', error);
-            alert(error.response.data)
+            console.log(error);
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en el registro',
+                text: 'Ocurrió un error al registrar al tutor.',
+            });
           });
     };
     
@@ -155,7 +162,7 @@ const RegistroTutor = () => {
                 Registrar un Nuevo Tutor
             </h1> 
             <div className="flex">
-                <div className="bg-white shadow-md rounded-lg p-6 flex-grow mr-6">
+                <div className="bg-white border border-gray-300 shadow-md rounded-lg p-6 flex-grow mr-6">
                     <form  className="space-y-6">
                         <div className="flex space-x-4">
                             <div className="flex-1 space-y-2">

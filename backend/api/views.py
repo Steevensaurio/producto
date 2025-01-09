@@ -6,7 +6,7 @@ from api import serializer as api_serializer
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, status
-from .models import Tutoria, Curso, Representante, Tutor, opcionParalelo, opcionCurso, Matriculas, opcionTitulos
+from .models import Tutoria, Curso, Representante, Estudiante, Tutor, opcionParalelo, opcionCurso, Matriculas, opcionTitulos, Asignaturas, opcionNivelEstudios
 from .serializer import TutoriaSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -126,6 +126,28 @@ class OpcionesTitulosListView(generics.ListAPIView):
     queryset = opcionTitulos.objects.all()
     serializer_class = api_serializer.OpcionTitulosSerializer
     
+########################################################    
+###  Vistas para listar las opciones de los niveles  ###
+########################################################
+
+class OpcionesNivelesListView(generics.ListAPIView):
+    queryset = opcionNivelEstudios.objects.all()
+    serializer_class = api_serializer.OpcionNivelEstudiosSerializer
+    
+#################################
+### Vistas de  de Asignaturas ###
+#################################
+
+class AsignaturaView(generics.CreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = api_serializer.AsignaturaSerializer
+    queryset = Asignaturas.objects.all()
+    
+
+class AsignaturaListView(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    queryset = Asignaturas.objects.all()
+    serializer_class = api_serializer.AsignaturaSerializer
     
 ########################################   
 ###  Vistas para listar las tutores  ###
@@ -135,8 +157,25 @@ class TutoresListView(generics.ListAPIView):
     queryset = Tutor.objects.all()
     serializer_class = api_serializer.TutorListSerializer
     
+    
+##############################################   
+###  Vistas para listar las representante  ###
+##############################################
 
-#Vista para matriculas
+class RepresentantesListView(generics.ListAPIView):
+    queryset = Representante.objects.all()
+    serializer_class = api_serializer.RepresentanteListSerializer  
+    
+############################################   
+###  Vistas para listar las estudiantes  ###
+############################################
+
+class EstudiantesListView(generics.ListAPIView):
+    queryset = Estudiante.objects.all()
+    serializer_class = api_serializer.EstudianteListSerializer   
+
+
+#Vista para Crear matriculas
 
 class MatriculaView(generics.CreateAPIView):
     permission_classes = [AllowAny]
@@ -165,3 +204,13 @@ class MatriculaView(generics.CreateAPIView):
                 {'success': False, 'message': ' '.join(error_messages)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+            
+            
+class MatriculaListView(generics.ListAPIView):
+    serializer_class = api_serializer.MatriculasListSerializer
+
+    def get_queryset(self):
+        curso_id = self.request.query_params.get('curso', None)  # Obtener el parámetro del curso
+        if curso_id:
+            return Matriculas.objects.filter(curso_id=curso_id)  # Filtrar por curso
+        return Matriculas.objects.all()  

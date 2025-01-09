@@ -4,17 +4,25 @@ import Swal from 'sweetalert2';
 
 
 const RegistroEstudiante = () => {
+    
+    // CAMPOS USUARIO //
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
+    const estado = "Activo"
     const [cedula, setCedula] = useState('');
-    const [ciudad, setCiudad] = useState('');
-    const [fechaNacimiento, setFechaNacimiento] = useState('');
     const [genero, setGenero] = useState('');
+    const [fechaNacimiento, setFechaNacimiento] = useState('');
+    const [telefono, setTelefono] = useState('');
+    const perfil = 1
+
+    //CAMPOS ESTUDIANTE //
+    const estadoAcademico = "Activo"
+    const [observaciones, setObservaciones]  = useState('');
     const [representante, setRepresentante] = useState();
-    const [passwordsMatch, setPasswordsMatch] = useState(false);
     
+    const [passwordsMatch, setPasswordsMatch] = useState(false);
     const [getRepresentante, setGetRepresentante] = useState([]);
 
     const validarCedulaEcuatoriana = (cedula) => {
@@ -39,15 +47,16 @@ const RegistroEstudiante = () => {
             try{
                 const response = await axios.get('http://127.0.0.1:8000/api/v1/representante/listado/');
                 setGetRepresentante(response.data)
+                
+                
             } catch (error){
                 console.log(error);
             }
         }
         representantes();
+        
     }, [])
 
-    const perfil = 1
-    const estado = "Activo"
     
     const handleRepresentanteChange = (e) => {
         setRepresentante(e.target.value)
@@ -62,9 +71,11 @@ const RegistroEstudiante = () => {
             email,
             password,
             password2,
-            ciudad,
-            fechaNacimiento,
+            cedula,
             genero,
+            fechaNacimiento,
+            telefono,
+            estadoAcademico,
             representante,
         ];
         if (fields.some(field => field === undefined || (typeof field === 'string' && field.trim() === ''))) {
@@ -102,27 +113,33 @@ const RegistroEstudiante = () => {
                 email,
                 password,
                 password2,
-                perfil,
                 estado,
+                cedula,
                 genero,
+                fecha_nacimiento: fechaNacimiento,
+                telefono,
+                id_perfil_FK: perfil,
             };
         
             const estudiante = {
-                cedula,
-                estado,
-                fecha_nacimiento: fechaNacimiento,
-                ciudad,
-                representante,
+                estado_academico: estadoAcademico,
+                observaciones,
+                representante
             };
+
+            console.log({ user, estudiante });
+            
         
             // Enviar solicitud al backend
             axios.post('http://127.0.0.1:8000/api/v1/estudiante/registrar/', { user, estudiante })
                 .then(response => {
+
+                    console.log('Usuario creado:', response.data);
+
                     Swal.fire({
-                        title: "Éxito",
-                        text: response.data.mensaje || "Estudiante registrado exitosamente.",
-                        icon: "success",
-                        confirmButtonText: "Aceptar",
+                        icon: 'success',
+                        title: 'Registro exitoso',
+                        text: 'Estudiante registrado exitosamente.',
                     });
         
                     // Limpiar los campos del formulario
@@ -137,11 +154,11 @@ const RegistroEstudiante = () => {
                     setRepresentante();
                 })
                 .catch(error => {
-                    const mensajeError = error.response?.data?.detail || "Ocurrió un error desconocido. Intente nuevamente.";
+                    console.log(error);
                     Swal.fire({
-                        icon: "error",
-                        title: "¡Error!",
-                        text: mensajeError,
+                        icon: 'error',
+                        title: 'Error en el registro',
+                        text: 'Ocurrió un error al registrar al estudiante.',
                     });
                 });
         };
@@ -154,7 +171,7 @@ const RegistroEstudiante = () => {
                 Registrar Nuevo Estudiante
             </h1>
             <div className="flex">
-                <div className="bg-white shadow-md rounded-lg p-6 mb-1 flex-grow mr-6">
+                <div className="bg-white border border-gray-300 shadow-md rounded-lg p-6 mb-1 flex-grow mr-6">
                     <form  className="space-y-6">
                         <div className="flex space-x-4">
                             <div className="flex-1 space-y-2">
@@ -207,13 +224,19 @@ const RegistroEstudiante = () => {
                                     onChange={(e) => setFechaNacimiento(e.target.value)}
                                 />
                             </div>
+                            
                             <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Lugar de Nacimiento</label>
+                                <label className="block text-sm font-medium">Telefono</label>
                                 <input 
                                     type="text" 
                                     className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    value={ciudad}
-                                    onChange={(e) => setCiudad(e.target.value)}
+                                    value={telefono}
+                                    placeholder="Ingresar número de telefono"
+                                    maxLength={10}
+                                    onChange={(e) =>{
+                                        const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+                                        setTelefono(onlyNums);
+                                    }}
                                 />
                             </div>
                         </div>
@@ -241,12 +264,22 @@ const RegistroEstudiante = () => {
                                     <option value="" hidden>Seleccione el representante</option>
                                     {getRepresentante.map(padre => (
                                         <option key={padre.id} value={padre.id}>
-                                            {padre.nombre}
+                                            {padre.id_user_FK.full_name}
                                         </option>
                                     ))}
                                 </select>
                             </div>
                         </div>
+                        <div className="flex-1 space-y-2">
+                            <label className="block text-sm font-medium">Observaciones</label>
+                            <input 
+                                type="text" 
+                                className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                value={observaciones}
+                                placeholder="Ingrese las observaciones"
+                                onChange={(e) => setObservaciones(e.target.value)}
+                            />
+                        </div>  
                         <div className="space-y-2">
                             <label className="block text-sm font-medium">Correo Electronico</label>
                             <input 
@@ -257,6 +290,7 @@ const RegistroEstudiante = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
+                         
                         <div className="flex space-x-4">
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Contraseña</label>

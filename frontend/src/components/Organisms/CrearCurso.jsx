@@ -6,23 +6,11 @@ const CrearCurso = () => {
 
     const [curso, setCurso] = useState('');
     const [paralelo, setParalelo] = useState('');
-    const [asignarTutor, setAsignarTutor] = useState();
 
-    const [getTutores, setGetTutores] = useState([]);
+    
     const [getCursos, setGetCursos] = useState([]);
     const [getParalelos, setGetParalelos] = useState([]);
 
-    useEffect(()=>{
-        const tutores = async () => {
-            try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/tutor/listado/');
-                setGetTutores(response.data)
-            } catch (error){
-                console.log(error);
-            }
-        }
-        tutores();
-    }, [])
     
     useEffect(()=>{
         const cursos = async () => {
@@ -33,10 +21,6 @@ const CrearCurso = () => {
                 console.log(error);
             }
         }
-        cursos();
-    }, [])
-
-    useEffect(()=>{
         const paralelos = async () => {
             try{
                 const response = await axios.get('http://127.0.0.1:8000/api/v1/paralelos/');
@@ -45,12 +29,10 @@ const CrearCurso = () => {
                 console.log(error);
             }
         }
+        cursos();
         paralelos();
     }, [])
 
-    const handleTutorChange = (e) => {
-        setAsignarTutor(e.target.value)
-    }
 
     const handleCursoChange = (e) => {
         setCurso(e.target.value)
@@ -62,7 +44,7 @@ const CrearCurso = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const fields = [curso, paralelo, asignarTutor,];
+        const fields = [curso, paralelo];
         if (fields.some(field => field.trim() === '')) {
             Swal.fire({
                 icon: 'error',
@@ -72,7 +54,7 @@ const CrearCurso = () => {
             return;
         }
 
-        const cursos = { curso, paralelo, tutor: asignarTutor };
+        const cursos = { curso, paralelo};
 
         // Aquí haces la llamada a la API para crear el curso usando Axios
         axios.post('http://127.0.0.1:8000/api/v1/curso/crear/', cursos)
@@ -97,8 +79,8 @@ const CrearCurso = () => {
                 text: 'No se pudo crear el curso. Verifique si el curso que intenta crear ya existe.',
                 confirmButtonText: 'OK',
             });
-          });
-      };
+        });
+    };
 
     return(
         <div className="w-full mx-auto p-6">
@@ -106,7 +88,7 @@ const CrearCurso = () => {
                 Crear nuevo curso
             </h1>
             <div className="flex">
-                <div className="bg-blue-100 shadow-md rounded-lg p-6 mb-1 flex-grow mr-6">
+                <div className="bg-white border border-gray-300 shadow-md rounded-lg p-6 mb-1 flex-grow mr-6">
                     <form className="space-y-6">
                         <div className="flex space-x-4">
                             <div className="flex-1 space-y-2">
@@ -141,22 +123,6 @@ const CrearCurso = () => {
                             </div>
                         </div>
                         
-                        
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium">Tutor</label>
-                            <select 
-                                className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                onChange={handleTutorChange}
-                                value={asignarTutor}
-                            >
-                                <option value="" hidden >Seleccione un tutor</option>
-                                {getTutores.map(tutor => (
-                                    <option key={tutor.id} value={tutor.id}>
-                                        {tutor.titulo}. {tutor.nombre}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
                     </form>
                 </div>
                 <div className="flex flex-col space-y-4 w-[350px]">

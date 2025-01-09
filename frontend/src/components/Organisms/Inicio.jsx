@@ -18,7 +18,6 @@ const Inicio = () => {
         const user = jwtDecode(accessToken);
         const firstName = user.full_name.split(' ')[0];
         setFullName(firstName)
-        
     };
 
     getUsername();

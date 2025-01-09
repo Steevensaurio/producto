@@ -118,8 +118,9 @@ class RegistroUsuarioRepresentanteSerializer(serializers.Serializer):
             email=user_data['email'],
             full_name=user_data['full_name'],
             estado=user_data['estado'],
+            cedula=user_data['cedula'],
             genero=user_data['genero'],
-            id_perfil_FK=user_data['id_perfil_FK'],
+            id_perfil_FK=user_data['id_perfil_FK'], 
             telefono=user_data['telefono'],
             fecha_nacimiento=user_data['fecha_nacimiento'], 
         )
@@ -162,10 +163,11 @@ class RegistroUsuarioEstudianteSerializer(serializers.Serializer):
             email=user_data['email'],
             full_name=user_data['full_name'],
             estado=user_data['estado'],
-            genero=user_data['genero'], 
-            perfil=user_data['perfil'],
+            cedula=user_data['cedula'],
+            genero=user_data['genero'],
+            id_perfil_FK=user_data['id_perfil_FK'], 
             telefono=user_data['telefono'],
-            fecha_nacimiento=user_data['fecha_nacimiento'],
+            fecha_nacimiento=user_data['fecha_nacimiento'], 
         )
         
         email_username, _ = user.email.split("@")
@@ -188,6 +190,14 @@ class CursoSerializer(serializers.ModelSerializer):
         model = api_models.Curso
         fields = '__all__'
         
+######################################### 
+### Modulo de Creación de Asignaturas ###
+#########################################
+
+class AsignaturaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = api_models.Asignaturas
+        fields = '__all__'
 
 ##################################### 
 ### Modulo de Creación de Tutoría ###
@@ -259,6 +269,13 @@ class OpcionTitulosSerializer(serializers.ModelSerializer):
         model = api_models.opcionTitulos
         fields = '__all__'
         
+############################################################### 
+### SERIALIZADOR DE OPCIONES PARA CREACION DE USUARIO REPRE ###
+###############################################################        
+class OpcionNivelEstudiosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = api_models.opcionNivelEstudios
+        fields = '__all__'
         
 #################################  
 ### Modulo de Listar Tutores  ###
@@ -274,3 +291,35 @@ class TutorListSerializer(serializers.ModelSerializer):
             'certificaciones', 'id_user_FK'
         ] 
         
+#######################################  
+### Modulo de Listar Representante  ###
+#######################################          
+
+class RepresentanteListSerializer(serializers.ModelSerializer):
+    id_user_FK = UserSerializer()
+
+    class Meta:
+        model = api_models.Representante
+        fields = '__all__'
+
+#######################################  
+### Modulo de Listar Estudiantes  ###
+#######################################        
+
+class EstudianteListSerializer(serializers.ModelSerializer):
+    id_user_FK = UserSerializer()
+    id_representante_FK = RepresentanteListSerializer()
+    
+    class Meta:
+        model = api_models.Estudiante
+        fields = '__all__'
+        
+        
+class MatriculasListSerializer(serializers.ModelSerializer):
+    id_estudiante_FK = EstudianteListSerializer()
+    id_curso_FK = CursoSerializer()
+    
+    class Meta: 
+        model = api_models.Matriculas
+        fields = '__all__'
+    

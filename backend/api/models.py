@@ -29,7 +29,7 @@ class Representante(models.Model):
     telefono_auxiliar = models.CharField(max_length=10, blank=True, null=True)
     
     def __str__(self):
-        return self.id_user_FK.get_full_name()
+        return self.id_user_FK.full_name
     
     class Meta:
         db_table='representante'
@@ -68,15 +68,15 @@ class Tutor(models.Model):
 class Estudiante(models.Model):
     
     ESTADO_OPCIONES = [
-        ('AC', 'Activo'),
-        ('IN', 'Inactivo'),
-        ('GR', 'Graduado'),
-        ('SU', 'Suspendido'),
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+        ('Graduado', 'Graduado'),
+        ('Suspendido', 'Suspendido'),
     ]
 
     
     estado_academico = models.CharField(
-        max_length=2,
+        max_length=20,
         choices=ESTADO_OPCIONES,
         default='AC',
         verbose_name="Estado Academico"
@@ -88,7 +88,7 @@ class Estudiante(models.Model):
     id_representante_FK = models.ForeignKey(Representante, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
-        return self.id_user_FK.get_full_name()
+        return self.id_user_FK.full_name
     
     class Meta:
         db_table='estudiantes'
@@ -100,7 +100,6 @@ class Asignaturas(models.Model):
     asignatura = models.CharField(unique=True, max_length=100, blank=True, null=True)
     codigo = models.CharField(unique=True, max_length=10, blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
-    creditos = models.IntegerField(blank=True, null=True)
     estado = models.CharField(max_length=10, choices=[('Activo', 'Activo'), ('Inactivo', 'Inactivo')], default='Activo')
     
     def __str__(self):
@@ -158,6 +157,9 @@ class Matriculas(models.Model):
     jornada = models.CharField(max_length=10, choices=[('Matutina', 'Matutina'), ('Vespertina', 'Vespertina')], default='Matutina')
     fecha_matricula = models.DateField(auto_now_add=True)
     año_lectivo = models.CharField(max_length=10, blank=True, null=True)
+    
+    def __str__(self):
+        return f'{self.id_estudiante_FK.id_user_FK.full_name} ||  {self.id_curso_FK.curso} "{self.id_curso_FK.paralelo}"'
     
     class Meta:
         db_table='matriculas'
@@ -245,6 +247,18 @@ class opcionTitulos(models.Model):
         db_table='opcion-titulos'
         verbose_name = 'Opcion Titulo'
         verbose_name_plural = 'Opcion Titulos'
+        
+class opcionNivelEstudios(models.Model):
+    codigo = models.CharField(max_length=5)
+    nivel = models.CharField() 
+    
+    def __str__(self):
+        return self.nivel 
+    
+    class Meta: 
+        db_table='opcion-nivel-estudios'
+        verbose_name = 'Opcion Nivel Estudio'
+        verbose_name_plural = 'Opcion Nivel Estudios'
     
 class opcionCurso(models.Model):
     cursos = models.CharField(max_length=100)

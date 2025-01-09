@@ -3,6 +3,7 @@ import Inicio from "../Organisms/Inicio";
 import SideMenu from "../Organisms/SideMenu";
 import RegistroEstudiante from "../Organisms/RegistroEstudiante";
 import CrearTutoria from "../Organisms/CrearTutoria";
+import CrearAsignatura from "../Organisms/CrearAsignatura";
 import ListadoTutorias from "../Organisms/ListadoTutorias";
 import RegistroRepresentante from "../Organisms/RegistroRepresentante";
 import RegistroTutor from "../Organisms/RegistroTutor";
@@ -14,6 +15,7 @@ import ListadoRepresentante from "../Organisms/ListadoRepresentante";
 import ListadoTutores from "../Organisms/ListadoTutores";
 import NavBar from "../Molecules/NavBar";
 import { ProviderContext } from "../../context/ContextProvider";
+import ListadoAsignaturas from "../Organisms/ListadoAsignaturas";
 
 const Dashboard = () => {
   const {itemActive} = useContext(ProviderContext);
@@ -23,8 +25,15 @@ const Dashboard = () => {
       case "Dashboard":
         return <Inicio />;
 
-      case "Matriculas":
+      //Modulo Matriculas
+      case "matriculas1":
         return <Matriculas/>;
+
+      //Modulo Tutores
+      case "asignatura1":
+        return <CrearAsignatura/>;
+      case "asignatura2":
+        return <ListadoAsignaturas/>
 
       //Modulo Tutores
       case "tutor1":
@@ -58,12 +67,12 @@ const Dashboard = () => {
       case "padre3":
         return <div>representante 3</div>
       
-      //Modulo de configuración  
-      case "confi1":
+      //Modulo de Cursos  
+      case "curso1":
         return <CrearCurso/>
-      case "confi2":
+      case "curso2":
         return <ListadoCurso/>
-      case "confi3":
+      case "curso3":
         return <div>Configuracion 3</div>
 
       default:

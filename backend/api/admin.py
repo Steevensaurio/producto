@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tutoria, Estudiante,Curso, Representante, Tutor, opcionCurso, opcionParalelo, Matriculas, opcionTitulos
+from .models import Tutoria, Estudiante,Curso, Representante, Tutor, opcionCurso, opcionParalelo, Matriculas, opcionTitulos, Asignaturas, opcionNivelEstudios
 
 # Register your models here.
 class ProfileAdmin(admin.ModelAdmin):
@@ -14,3 +14,5 @@ admin.site.register(Matriculas)
 admin.site.register(opcionTitulos)
 admin.site.register(opcionCurso)
 admin.site.register(opcionParalelo)
+admin.site.register(Asignaturas)
+admin.site.register(opcionNivelEstudios)

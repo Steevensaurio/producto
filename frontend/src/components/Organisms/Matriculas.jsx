@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 const Matriculas = () => {
 
     const [estudiante, setEstudiante] = useState();
+    const [nombre, setNombre] = useState('');
     const [curso, setCurso] = useState();
     const [jornada, setJornada] = useState('');
     const [year, setYear] = useState('');
@@ -12,6 +13,7 @@ const Matriculas = () => {
 
     const [getCursos, setGetCursos] = useState([]);
     const [getEstudiantes, setGetEstudiantes] = useState([]);
+    const [filteredEstudiantes, setFilteredEstudiantes] = useState([]);
 
     useEffect(()=>{
         const estudiantes = async () => {
@@ -35,10 +37,6 @@ const Matriculas = () => {
 
     }, [])
 
-    const handleEstudianteChange = (e) => {
-        setEstudiante(e.target.value)
-    }
-
     const handleYearChange = (e) => {
         setYear(e.target.value);
     };
@@ -49,6 +47,27 @@ const Matriculas = () => {
 
     const handleJornadaChange = (e) => {
         setJornada(e.target.value);
+    };
+
+    const handleEstudiantesChange = (e) => {
+        const query = e.target.value;
+        setNombre(query);
+        console.log(query)
+
+        if (query.length > 0) {
+            const filtered = getEstudiantes.filter((student) =>
+            student.id_user_FK.full_name.toLowerCase().includes(query.toLowerCase())
+            );
+            setFilteredEstudiantes(filtered);
+        } else {
+            setFilteredEstudiantes([]);
+        }
+    };
+
+    const handleStudentSelect = (student) => {
+        setNombre(student.id_user_FK.full_name)
+        setEstudiante(student.id);
+        setFilteredEstudiantes([]);
     };
 
 
@@ -73,9 +92,17 @@ const Matriculas = () => {
             año_lectivo: year,
         }
 
+        console.log(matricula);
+        
+
         axios.post('http://127.0.0.1:8000/api/v1/matricula/', matricula)
           .then(response => {
             
+            setEstudiante()
+            setNombre('')
+            setCurso()
+            setJornada('')
+            setYear('')
 
             Swal.fire({
                 icon: 'success',
@@ -105,21 +132,29 @@ const Matriculas = () => {
             <div className="flex">
                 <div className="bg-white shadow-md rounded-lg p-6 mb-1 flex-grow mr-6">
                     <form className="space-y-6">
-                        <div className="flex space-x-4">
-                            <div className="flex-1 space-y-2">
+                        <div className="flex space-x-4 ">
+                            <div className="flex-1 space-y-2 relative">
                                 <label className="block text-sm font-medium">Estudiante</label>
-                                <select 
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    onChange={handleEstudianteChange}
-                                    value={estudiante}
-                                >
-                                    <option value="" hidden >Seleccione el estudiante</option>
-                                    {getEstudiantes.map(student => (
-                                        <option key={student.id} value={student.id}>
-                                            {student.nombre}
-                                        </option>
+                                <input
+                                type="text"
+                                className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                value={nombre}
+                                onChange={handleEstudiantesChange}
+                                placeholder="Escriba el nombre del estudiante"
+                                />
+                                {filteredEstudiantes.length > 0 && (
+                                <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                    {filteredEstudiantes.map((student) => (
+                                    <li
+                                        key={student.id}
+                                        className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                                        onClick={() => handleStudentSelect(student)}
+                                    >
+                                        {student.id_user_FK.full_name}
+                                    </li>
                                     ))}
-                                </select>
+                                </ul>
+                                )}
                             </div>
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Curso</label>
