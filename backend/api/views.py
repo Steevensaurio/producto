@@ -6,7 +6,7 @@ from api import serializer as api_serializer
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, status
-from .models import Tutoria, Curso, Representante, Estudiante, Tutor, opcionParalelo, opcionCurso, Matriculas, opcionTitulos, Asignaturas, opcionNivelEstudios
+from .models import Tutoria, Curso, Representante, InscripcionTutoria, Estudiante, Tutor, opcionParalelo, opcionCurso, Matriculas, opcionTitulos, Asignaturas, opcionNivelEstudios
 from .serializer import TutoriaSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -27,7 +27,7 @@ class SolicitudTutoriaView(generics.CreateAPIView):
 
 class TutoriaListView(APIView):
     permission_classes = [
-        IsAuthenticated
+        AllowAny
     ]  # Asegúrate de que solo los usuarios autenticados puedan acceder
 
     def get(self, request):
@@ -224,3 +224,12 @@ class MatriculaListView(generics.ListAPIView):
             queryset = queryset.filter(jornada=seccion)
 
         return queryset
+    
+    
+############################################   
+###  Vistas para Incripciones a tutoria  ###
+############################################
+
+class InscripcionesView (generics.CreateAPIView):
+    queryset = InscripcionTutoria.objects.all()
+    serializer_class = api_serializer.InscripcionSerializer

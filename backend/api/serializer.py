@@ -205,9 +205,21 @@ class AsignaturaSerializer(serializers.ModelSerializer):
 
 class TutoriaSerializer(serializers.ModelSerializer):
     
-    
     class Meta:
         model = api_models.Tutoria
+        fields = '__all__'
+        
+####################################### 
+### Modulo de Inscripción a Tutoría ###
+#######################################
+
+class InscripcionSerializer(serializers.ModelSerializer):
+    
+    estudiante = serializers.PrimaryKeyRelatedField(queryset=api_models.Estudiante.objects.all(), source='id_estudiante_FK')
+    tutoria = serializers.PrimaryKeyRelatedField(queryset=api_models.Tutoria.objects.all(), source='id_tutoria_FK')
+    
+    class Meta:
+        model = api_models.InscripcionTutoria
         fields = '__all__'
         
 
