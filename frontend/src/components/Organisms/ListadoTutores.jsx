@@ -70,7 +70,7 @@ const ListadoTutores = () => {
               <i className="pi pi-whatsapp text-green-500 text-lg mr-1"></i>
               
               <a
-                  href={`https://wa.me/${rowData.id_user_FK.telefono}`}
+                  href={`https://wa.me/+593${rowData.id_user_FK.telefono}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="ml-1"

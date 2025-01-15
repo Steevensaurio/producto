@@ -21,11 +21,22 @@ const ListadoTutorias = () => {
         axios.get('http://127.0.0.1:8000/api/v1/tutoria/listado/')
         .then(response => {
             setTutorias(response.data);
+            console.log(response.data);
+            
         })
         .catch(error => {
             console.error('Error al obtener las tutorías:', error);
         });
     }, []);
+
+
+  const tutorBodyTemplate = (rowData) => {
+      return (
+          <div className="flex items-center">
+              <span className="text-gray-800 ml-3 font-medium">{rowData.id_tutor_FK.id_user_FK.full_name}</span>
+          </div>
+      )
+  }
 
     return(
         <div className="flex flex-col h-screen contenedor">
@@ -40,6 +51,9 @@ const ListadoTutorias = () => {
               >
                 <Column field="tema" header="Tema"></Column>
                 <Column field="fecha" header="Fecha"></Column>
+                <Column field="hora_inicio" header="Fecha"></Column>
+                <Column field="hora_fin" header="Fecha"></Column>
+                <Column field={tutorBodyTemplate} header="Tutor"></Column>
               </DataTable>
             </div>
           </div>

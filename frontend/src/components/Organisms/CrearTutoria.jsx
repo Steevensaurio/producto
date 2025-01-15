@@ -8,7 +8,8 @@ const CrearTutoria = () => {
     const [modalidad, setModalidad] = useState('');
     const [seccion, setSeccion] = useState('');
     const [fecha, setFecha] = useState('');
-    const [hora, setHora] = useState('');
+    const [horaInicio, setHoraInicio] = useState('');
+    const [horaFin, setHoraFin] = useState('');
     const [tipo, setTipo] = useState('');
     const [asignarTutor, setAsignarTutor] = useState();
 
@@ -35,7 +36,8 @@ const CrearTutoria = () => {
             modalidad,
             seccion,
             fecha,
-            hora,
+            horaInicio,
+            horaFin,
             tipo,
             asignarTutor,
         ];
@@ -54,9 +56,10 @@ const CrearTutoria = () => {
             modalidad,
             seccion,
             fecha,
-            hora,
+            hora_inicio: horaInicio,
+            hora_fin: horaFin,
             tipo,
-            tutor: asignarTutor,
+            id_tutor_FK: asignarTutor,
         };
 
         console.log(tutoria);
@@ -77,7 +80,8 @@ const CrearTutoria = () => {
             setModalidad('')
             setSeccion('')
             setFecha('')
-            setHora('')
+            setHoraInicio('')
+            setHoraFin('')
             setTipo('')
             setAsignarTutor('')
           })
@@ -97,6 +101,12 @@ const CrearTutoria = () => {
     const handleTutorChange = (e) => {
         setAsignarTutor(e.target.value)
     }
+
+    const calcularFechaMinima = () => {
+        const hoy = new Date();
+        hoy.setDate(hoy.getDate() + 2); // Agregar 2 días a la fecha actual
+        return hoy.toISOString().split("T")[0]; // Obtener solo la parte de la fecha
+    };
 
     return(
         <div className="w-full mx-auto p-6">
@@ -153,26 +163,6 @@ const CrearTutoria = () => {
                                     <option value="Vespertina">Vespertina</option>
                                 </select>
                             </div>
-                        </div>
-                        <div className="flex space-x-4">
-                            <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Fecha</label>
-                                <input 
-                                    type="date" 
-                                    className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    value={fecha}
-                                    onChange={(e) => setFecha(e.target.value)}
-                                />
-                            </div>
-                            <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Hora</label>
-                                <input 
-                                    type="time"
-                                    className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    value={hora}
-                                    onChange={(e) => setHora(e.target.value)}
-                                />
-                            </div>
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Tipo</label>
                                 <select 
@@ -186,6 +176,55 @@ const CrearTutoria = () => {
                                     <option value="Individual">Individual</option>
                                 </select>
                             </div>
+                        </div>
+                        <div className="flex space-x-4">
+                            <div className="flex-1 space-y-2">
+                                <label className="block text-sm font-medium">Fecha</label>
+                                <input 
+                                    type="date" 
+                                    className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    value={fecha}
+                                    onChange={
+                                        (e) => {
+                                            setFecha(e.target.value)
+                                            setHoraInicio("")
+                                            setHoraFin("")
+                                        }
+                                    }
+                                    min={calcularFechaMinima()}
+                                />
+                            </div>
+                            <div className="flex-1 space-y-2">
+                                <label className="block text-sm font-medium">Hora Inicio</label>
+                                <input 
+                                    type="time"
+                                    className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    value={horaInicio}
+                                    onChange={(e) => {
+                                        setHoraInicio(e.target.value);
+                                        if (horaInicio && e.target.value > horaFin) {
+                                            setHoraFin('');
+                                        }
+                                    }}
+                                    disabled={!fecha}
+                                />
+                            </div>
+                            <div className="flex-1 space-y-2">
+                                <label className="block text-sm font-medium">Hora Fin</label>
+                                <input 
+                                    type="time"
+                                    className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    value={horaFin}
+                                    onChange={(e) => {
+                                        setHoraFin(e.target.value)
+                                        if (horaFin && e.target.value < horaInicio) {
+                                            setHoraFin('');
+                                        }
+                                    }}
+                                    disabled={!horaInicio}
+                                />
+                            </div>
+                            
                         </div>
                         
                         <div className="space-y-2">
@@ -202,7 +241,6 @@ const CrearTutoria = () => {
                                     </option>
                                 ))}
                             </select>
-                            <h1>{asignarTutor}</h1>
                         </div>
                         
                     </form>

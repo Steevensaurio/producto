@@ -174,7 +174,8 @@ class Tutoria(models.Model):
     modalidad = models.CharField(max_length=100, choices=[('Presencial', 'Presencial'), ('Virtual', 'Virtual')])
     seccion = models.CharField(max_length=10, choices=[('Matutina', 'Matutina'), ('Vespertina', 'Vespertina')], default='Matutina')
     fecha = models.DateField()
-    hora = models.TimeField(null=True)
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
     tipo = models.CharField(
         max_length=10,
         choices=[
