@@ -41,10 +41,6 @@ const Inscripciones = () => {
         setYear(e.target.value);
     };
 
-    const handleCursoChange = (e) => {
-        setCurso(e.target.value)
-    }
-
     const handleJornadaChange = (e) => {
         setJornada(e.target.value);
     };
@@ -156,20 +152,28 @@ const Inscripciones = () => {
                                 </ul>
                                 )}
                             </div>
-                            <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Curso</label>
-                                <select 
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    onChange={handleCursoChange}
-                                    value={curso}
-                                >
-                                    <option value="" hidden >Seleccione el curso</option>
-                                    {getCursos.map(curso => (
-                                        <option key={curso.id} value={curso.id}>
-                                            {curso.curso} "{curso.paralelo}"
-                                        </option>
+                            <div className="flex-1 space-y-2 relative">
+                                <label className="block text-sm font-medium">Tutoria</label>
+                                <input
+                                type="text"
+                                className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                value={nombre}
+                                onChange={handleEstudiantesChange}
+                                placeholder="Escriba el tema de la tutoría"
+                                />
+                                {filteredEstudiantes.length > 0 && (
+                                <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                    {filteredEstudiantes.map((student) => (
+                                    <li
+                                        key={student.id}
+                                        className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                                        onClick={() => handleStudentSelect(student)}
+                                    >
+                                        {student.id_user_FK.full_name}
+                                    </li>
                                     ))}
-                                </select>
+                                </ul>
+                                )}
                             </div>
                         </div>
                         <div className="flex space-x-4">

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import validarCedulaEcuatoriana from "../../utils/validarCedula";
 
 
 const RegistroEstudiante = () => {
@@ -24,23 +25,6 @@ const RegistroEstudiante = () => {
     
     const [passwordsMatch, setPasswordsMatch] = useState(false);
     const [getRepresentante, setGetRepresentante] = useState([]);
-
-    const validarCedulaEcuatoriana = (cedula) => {
-        if (!/^\d{10}$/.test(cedula)) return false;
-
-        const coeficientes = [2, 1, 2, 1, 2, 1, 2, 1, 2];
-        const verificador = parseInt(cedula.charAt(9));
-
-        let suma = 0;
-        for (let i = 0; i < 9; i++) {
-            let valor = parseInt(cedula.charAt(i)) * coeficientes[i];
-            suma += valor > 9 ? valor - 9 : valor;
-        }
-
-        const digitoVerificador = suma % 10 ? 10 - (suma % 10) : 0;
-
-        return digitoVerificador === verificador;
-    };
 
     useEffect(()=>{
         const representantes = async () => {

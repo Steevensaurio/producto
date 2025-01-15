@@ -1,0 +1,19 @@
+steps:
+# Paso 1: Construir el frontend (React)
+- name: 'node:20'  # Usa la imagen de Node.js 20
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      npm install  # Instala las dependencias
+      npm run build  # Construye la aplicación
+
+# Paso 2: Desplegar en Cloud Storage
+- name: 'gcr.io/cloud-builders/gsutil'
+  args:
+    - '-m'
+    - 'cp'
+    - '-r'
+    - 'build/*'
+    - 'gs://tutoeducabucket/'
+    

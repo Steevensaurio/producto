@@ -63,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -92,10 +93,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "basedepruebate",
+        "NAME": "postgres",
         "USER": "postgres",
-        "PASSWORD": "admin",
-        "HOST": "localhost",
+        "PASSWORD": "vasodeagua11",
+        "HOST": "34.121.91.145",
         "PORT": "5432",
     }
 }

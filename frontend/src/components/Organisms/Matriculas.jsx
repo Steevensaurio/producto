@@ -127,7 +127,7 @@ const Matriculas = () => {
     return(
         <div className="w-full mx-auto p-6">
             <h1 className="text-2xl font-bold text-gray-800 mb-2">
-                Matricular Estudiante
+                Matricular estudiante
             </h1>
             <div className="flex">
                 <div className="bg-white shadow-md rounded-lg p-6 mb-1 flex-grow mr-6">
@@ -159,13 +159,15 @@ const Matriculas = () => {
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Curso</label>
                                 <select 
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className={`text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                                        curso === undefined || curso === ""? "text-gray-400" : "text-black"
+                                    }`}
                                     onChange={handleCursoChange}
                                     value={curso}
                                 >
-                                    <option value="" hidden >Seleccione el curso</option>
+                                    <option value="" hidden selected >Seleccione el curso</option>
                                     {getCursos.map(curso => (
-                                        <option key={curso.id} value={curso.id}>
+                                        <option key={curso.id} value={curso.id} className="text-black">
                                             {curso.curso} "{curso.paralelo}"
                                         </option>
                                     ))}
@@ -176,44 +178,46 @@ const Matriculas = () => {
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Jornada</label>
                                 <select 
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className={`text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${jornada === "" ? "text-gray-400" : "text-black"}`}
                                     value={jornada}
                                     onChange={handleJornadaChange}
                                     required
                                 >
                                     <option value="" hidden>Seleccione una jornada</option>
-                                    <option value="Matutina">Matutina</option>
-                                    <option value="Vespertina">Vespertina</option>
+                                    <option value="Matutina" className="text-black">Matutina</option>
+                                    <option value="Vespertina" className="text-black">Vespertina</option>
                                 </select>
                             </div>
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Año Lectivo</label>
                                 <select 
                                     id="year"
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className={`text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${year === "" ? "text-gray-400" : "text-black"}`}
                                     value={year}
                                     onChange={handleYearChange}
                                     required
                                 >
                                     <option value="" hidden>Seleccione el año lectivo</option>
-                                    <option value={`${currentYear-1}-${currentYear}`}>{`${currentYear-1}-${currentYear}`}</option>
-                                    <option value={`${currentYear}-${currentYear + 1}`}>{`${currentYear}-${currentYear + 1}`}</option>
+                                    <option value={`${currentYear-1}-${currentYear}`}  className="text-black">{`${currentYear-1}-${currentYear}`}</option>
+                                    <option value={`${currentYear}-${currentYear + 1}`} className="text-black">{`${currentYear}-${currentYear + 1}`}</option>
+                                    <option value={`${currentYear + 1}-${currentYear + 2}`} className="text-black">{`${currentYear + 1}-${currentYear + 2}`}</option>
                                 </select>
                             </div>
                         </div>
+                        <div className="flex flex-col space-y-4 w-full items-end">
+                            <button 
+                                type="submit"
+                                className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
+                                    border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+                                    active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+                                onClick={(e) => handleSubmit(e)}
+                            >
+                                Matricular estudiante
+                            </button>
+                        </div>
                     </form>
                 </div>
-                <div className="flex flex-col space-y-4 w-[250px]">
-                    <button 
-                        type="submit"
-                        className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
-                            border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
-                            active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
-                        onClick={(e) => handleSubmit(e)}
-                    >
-                        Registrar
-                    </button>
-                </div>
+                
             </div>
         </div>
     )

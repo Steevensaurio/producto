@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
-import PhoneInput from 'react-phone-input-2'
+import validarCedulaEcuatoriana from "../../utils/validarCedula";
 
 
 
@@ -46,25 +46,9 @@ const RegistroTutor = () => {
     const handleTituloChange = (e) => {
         setNivelEstudios(e.target.value)
     }
-    
-    const validarCedulaEcuatoriana = (cedula) => {
-        if (!/^\d{10}$/.test(cedula)) return false;
 
-        const coeficientes = [2, 1, 2, 1, 2, 1, 2, 1, 2];
-        const verificador = parseInt(cedula.charAt(9));
-
-        let suma = 0;
-        for (let i = 0; i < 9; i++) {
-            let valor = parseInt(cedula.charAt(i)) * coeficientes[i];
-            suma += valor > 9 ? valor - 9 : valor;
-        }
-
-        const digitoVerificador = suma % 10 ? 10 - (suma % 10) : 0;
-
-        return digitoVerificador === verificador;
-    };
-    
     const handleSubmit = (e) => {
+        
         e.preventDefault();
 
         const fields = [
@@ -175,15 +159,15 @@ const RegistroTutor = () => {
                                     onChange={(e) => setFullName(e.target.value)}
                                 />
                             </div>
-                            <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Cedula</label>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium">Cédula</label>
                                 <div className="relative">
                                     <input 
                                         type="text" 
                                         className={`text-sm custom-input w-full px-4 py-1 border rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                                             cedula && !validarCedulaEcuatoriana(cedula) ? 'border-red-500' : 'border-gray-300'
                                         }`}
-                                        placeholder="Ingresar número de cédula válido"
+                                        placeholder="Ingresar cédula válida"
                                         value={cedula}
                                         maxLength={10}
                                         onChange={(e) => {
@@ -203,32 +187,33 @@ const RegistroTutor = () => {
                                     <p className="text-red-500 text-xs mt-1">Cédula inválida</p>
                                 )}
                             </div>
-                            
-                        </div>
-                        <div className="flex space-x-4">
-                            
-                            <div className="flex-1 space-y-2">
+                            <div className="space-y-2">
                                 <label className="block text-sm font-medium">Genero</label>
                                 <select 
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className={`text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${genero === "" ? "text-gray-400" : "text-black"}`}
                                     value={genero}
                                     onChange={(e) => setGenero(e.target.value)}
                                     required
                                 >
-                                    <option value="" hidden>Seleccione el genero</option>
-                                    <option value="Masculino">Masculino</option>
-                                    <option value="Femenino">Femenino</option>
+                                    <option value="" className="text-gray-400" hidden>Seleccione el genero</option>
+                                    <option value="Masculino" className="text-black">Masculino</option>
+                                    <option value="Femenino" className="text-black">Femenino</option>
                                 </select>
                             </div>
-                            <div className="flex-1 space-y-2">
+                            <div className="space-y-2">
                                 <label className="block text-sm font-medium">Fecha nacimiento</label>
                                 <input 
-                                    type="date" 
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    type="date"
+                                    className={`text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                                        !fechaNacimiento ? "text-gray-400" : "text-black"
+                                      }`}
                                     value={fechaNacimiento}
                                     onChange={(e) => setFechaNacimiento(e.target.value)}
                                 />
                             </div>
+                        </div>
+                        <div className="flex space-x-4">
+                            
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Telefono / Celular</label>
                                 <input 
@@ -243,19 +228,17 @@ const RegistroTutor = () => {
                                     }}
                                 />
                             </div>
-                        </div>
-                        <div className="flex space-x-4">
-                        <div className="flex-1 space-y-2">
+                            <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Titulo</label>
                                 <select 
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className={`text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${nivelEstudios === "" ? "text-gray-400" : "text-black"}`}
                                     value={nivelEstudios}
                                     onChange={handleTituloChange}
                                     required
                                 >
-                                    <option value="" hidden >Seleccione el nivel de estudios</option>
+                                    <option value="" className="text-gray-400" hidden >Seleccione el nivel de estudios</option>
                                     {getTitulos.map(titulo => (
-                                        <option key={titulo.id} value={titulo.codigo}>
+                                        <option key={titulo.id} value={titulo.codigo} className="text-black">
                                             {titulo.titulo}
                                         </option>
                                         
@@ -269,19 +252,18 @@ const RegistroTutor = () => {
                                 <input 
                                     type="text" 
                                     className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Área de especialidad"
                                     value={especializacion}
                                     onChange={(e) => setEspecializacion(e.target.value)}
                                 />
                             </div>
-                        </div>
-                        <div className="flex space-x-4">
-                            <div className="flex-1 space-y-2">
+                            <div className="space-y-2">
                                 <label className="block text-sm font-medium">Años de Experiencia</label>
                                 <input 
                                     type="text" 
                                     className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     value={añosExperiencia}
-                                    placeholder="Ingrese un numero entero"
+                                    placeholder="Ingrese número de años"
                                     maxLength={2}
                                     onChange={(e) =>{
                                         const onlyNums = e.target.value.replace(/[^0-9]/g, '');
@@ -289,6 +271,9 @@ const RegistroTutor = () => {
                                     }}
                                 />
                             </div>
+                        </div>
+                        <div className="flex space-x-4">
+                            
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Certificaciones</label>
                                 <input 
@@ -300,7 +285,6 @@ const RegistroTutor = () => {
                                 />
                             </div>            
                         </div>
-                        
                         <div className="space-y-2">
                             <label className="block text-sm font-medium">Correo Electronico</label>
                             <input 
@@ -356,18 +340,18 @@ const RegistroTutor = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className="flex flex-col space-y-4 w-full items-end">
+                            <button 
+                                type="submit"
+                                className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
+                                    border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+                                    active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+                                onClick={(e) => handleSubmit(e)}
+                            >
+                                Registrar tutor
+                            </button>
+                        </div>
                     </form>
-                </div>
-                <div className="flex flex-col space-y-4 w-[250px]">
-                    <button 
-                        type="submit"
-                        className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
-                            border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
-                            active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
-                        onClick={(e) => handleSubmit(e)}
-                    >
-                        Registrar
-                    </button>
                 </div>
             </div>
         </div>

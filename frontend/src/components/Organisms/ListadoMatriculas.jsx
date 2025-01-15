@@ -20,9 +20,11 @@ const ListadoMatriculas = () => {
     const [cursos, setCursos] = useState([]);
     const [selectedCurso, setSelectedCurso] = useState(null);
     const [selectedSeccion, setSelectedSeccion] = useState('');
+    const [selectedAñoLectivo, setSelectedAñoLectivo] = useState('');
+    const [añosLectivos, setAñosLectivos] = useState([]);
   
     // Función para obtener las matrículas
-    const fetchMatriculas = (cursoId = null, seccion = null) => {
+    const fetchMatriculas = (cursoId = null, seccion = null, añolectivo = null) => {
         let url = 'http://127.0.0.1:8000/api/v1/matricula/listado/';
         const params = [];
 
@@ -33,6 +35,13 @@ const ListadoMatriculas = () => {
             params.push(`seccion=${seccion}`);
         }
 
+        if (añolectivo) {
+            params.push(`año_lectivo=${añolectivo}`);
+        }
+
+        console.log(params);
+        
+
         if (params.length > 0) {
             url += `?${params.join('&')}`;
         }
@@ -40,7 +49,7 @@ const ListadoMatriculas = () => {
         axios.get(url)
             .then(response => {
                 console.log('Matriculas:', response.data);
-                setMatriculas(response.data); // Actualizamos el estado con los datos de las matrículas
+                setMatriculas(response.data);
             })
             .catch(error => {
                 console.error('Error fetching matriculas:', error);
@@ -57,24 +66,40 @@ const ListadoMatriculas = () => {
           console.error('Error fetching cursos:', error);
         });
     };
+    
+    const fetchPeriodos = () => {
+      axios.get('http://127.0.0.1:8000/api/v1/periodos/')  // Asegúrate de que esta URL sea la correcta
+        .then(response => {
+          setAñosLectivos(response.data);  // Actualizamos el estado con los datos de los cursos
+        })
+        .catch(error => {
+          console.error('Error fetching años lectivos:', error);
+        });
+    };
   
     // Se ejecuta cuando el componente se monta
     useEffect(() => {
       fetchMatriculas();  // Cargar las matrículas por defecto
-      fetchCursos();      // Cargar los cursos
+      fetchCursos();  
+      fetchPeriodos()    // Cargar los cursos
     }, []);
   
-    // Función que se ejecuta cuando se selecciona un curso
     const handleCursoChange = (e) => {
         const cursoId = e.target.value;
         setSelectedCurso(cursoId);
-        fetchMatriculas(cursoId, selectedSeccion); // Incluye `selectedSeccion` para mantener los filtros consistentes
+        fetchMatriculas(cursoId, selectedSeccion, selectedAñoLectivo);
     };
 
     const handleSeccionChange = (e) => {
         const seccion = e.target.value;
         setSelectedSeccion(seccion);
-        fetchMatriculas(selectedCurso, seccion); // Incluye `selectedCurso` para mantener los filtros consistentes
+        fetchMatriculas(selectedCurso, seccion, selectedAñoLectivo);
+    };
+
+    const handleAñoLectivoChange = (e) => {
+        const añoLectivo = e.target.value;
+        setSelectedAñoLectivo(añoLectivo);
+        fetchMatriculas(selectedCurso, selectedSeccion, añoLectivo);
     };
 
     const studentBodyTemplate =(rowData)=>{
@@ -133,7 +158,7 @@ const ListadoMatriculas = () => {
                 <div className="flex space-x-4">
                     <span className="text-md w-full font-semibold px-1 py-2">Filtrar por: </span>
                     <select
-                        className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="text-sm custom-input w-[150px] px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         onChange={handleCursoChange}
                         value={selectedCurso || ''}
                     >
@@ -149,9 +174,21 @@ const ListadoMatriculas = () => {
                         onChange={handleSeccionChange}
                         value={selectedSeccion || ''}
                     >
-                        <option value="">Sección</option>
+                        <option value="">Jornada</option>
                         <option value="Matutina">Matutina</option>
                         <option value="Vespertina">Vespertina</option>
+                    </select>
+                    <select
+                        className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        onChange={handleAñoLectivoChange}
+                        value={selectedAñoLectivo || ''}
+                    >
+                        <option value="">Año Lectivo</option>
+                        {añosLectivos.map((año) => (
+                            <option key={año} value={año}>
+                                {año}                            
+                            </option>
+                        ))}
                     </select>
                 </div>
         </div>

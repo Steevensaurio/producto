@@ -18,6 +18,7 @@ import NavBar from "../Molecules/NavBar";
 import { ProviderContext } from "../../context/ContextProvider";
 import ListadoAsignaturas from "../Organisms/ListadoAsignaturas";
 import Inscripciones from "../Organisms/Inscripciones";
+import AsignarCargaHoraria from "../Organisms/AsignarCargaHoraria";
 
 const Dashboard = () => {
   const {itemActive} = useContext(ProviderContext);
@@ -45,7 +46,7 @@ const Dashboard = () => {
       case "tutor2":
         return <ListadoTutores/>;
       case "tutor3":
-        return <div>TUTOR 3</div>;
+        return <AsignarCargaHoraria/>;
 
       //Modulo Estudiantes
       case "student1":

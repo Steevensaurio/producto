@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -25,17 +26,6 @@ class SolicitudTutoriaView(generics.CreateAPIView):
         serializer.save(autor=self.request.user)
 
 
-class TutoriaListView(APIView):
-    permission_classes = [
-        AllowAny
-    ]  # Asegúrate de que solo los usuarios autenticados puedan acceder
-
-    def get(self, request):
-        tutorias = Tutoria.objects.all()  # Obtiene todas las tutorías
-        serializer = TutoriaSerializer(tutorias, many=True)
-        return Response(serializer.data)
-    
-    
 # -------------------------------------------------------------------------- #
     
 
@@ -210,19 +200,21 @@ class MatriculaListView(generics.ListAPIView):
     serializer_class = api_serializer.MatriculasListSerializer
 
     def get_queryset(self):
-        curso_id = self.request.query_params.get('curso', None)  # Parámetro para el curso
-        seccion = self.request.query_params.get('seccion', None)  # Parámetro para la sección
+        curso_id = self.request.query_params.get('curso', None) 
+        seccion = self.request.query_params.get('seccion', None) 
+        año_lectivo = self.request.query_params.get('año_lectivo', None) 
 
         queryset = Matriculas.objects.all()
 
-        # Filtrar por curso si se proporciona el parámetro
         if curso_id:
             queryset = queryset.filter(id_curso_FK=curso_id)
 
-        # Filtrar por sección si se proporciona el parámetro
         if seccion:
             queryset = queryset.filter(jornada=seccion)
 
+        if año_lectivo:
+            queryset = queryset.filter(año_lectivo=año_lectivo)
+            
         return queryset
     
     
@@ -233,3 +225,11 @@ class MatriculaListView(generics.ListAPIView):
 class InscripcionesView (generics.CreateAPIView):
     queryset = InscripcionTutoria.objects.all()
     serializer_class = api_serializer.InscripcionSerializer
+    
+    
+
+class AniosLectivosListView(generics.ListAPIView):
+    def get(self, request, *args, **kwargs):
+        # Obtener años lectivos únicos
+        años_lectivos = Matriculas.objects.values_list('año_lectivo', flat=True).distinct()
+        return JsonResponse(list(años_lectivos), safe=False)
