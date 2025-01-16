@@ -86,6 +86,8 @@ const AsignarCargaHoraria = () => {
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Asignatura</label>
                                 <select 
+                                    value={asignatura}
+                                    onChange={handleAsignaturaChange}
                                     className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 >
