@@ -119,7 +119,7 @@ class CargaDocente(models.Model):
     horas = models.PositiveIntegerField(default=0, verbose_name="Horas Asignadas")
     
     def __str__(self):
-        return f'{self.id_asignatura_FK.asignatura} -{self.periodo} - {self.id_tutor_FK.id_user_FK.get_full_name()}'
+        return f'{self.id_asignatura_FK.asignatura} -{self.periodo} - {self.id_tutor_FK.id_user_FK.full_name}'
     
     class Meta:
         db_table='carga-docente'
