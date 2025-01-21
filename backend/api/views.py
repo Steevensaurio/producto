@@ -7,7 +7,7 @@ from api import serializer as api_serializer
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, status
-from .models import Tutoria, Curso, Representante, InscripcionTutoria, Estudiante, Tutor, opcionParalelo, opcionCurso, Matriculas, opcionTitulos, Asignaturas, opcionNivelEstudios
+from .models import Tutoria, Curso, Representante, InscripcionTutoria, Estudiante, Tutor, opcionParalelo, opcionCurso, Matriculas, opcionTitulos, Asignaturas, opcionNivelEstudios, CargaDocente
 from .serializer import TutoriaSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -233,3 +233,8 @@ class AniosLectivosListView(generics.ListAPIView):
         # Obtener años lectivos únicos
         años_lectivos = Matriculas.objects.values_list('año_lectivo', flat=True).distinct()
         return JsonResponse(list(años_lectivos), safe=False)
+
+
+class AsignarCargaDocenteView(generics.CreateAPIView):
+    serializer_class = api_serializer.CargaDocenteSerializer
+    queryset = CargaDocente.objects.all()

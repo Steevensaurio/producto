@@ -337,4 +337,11 @@ class MatriculasListSerializer(serializers.ModelSerializer):
     class Meta: 
         model = api_models.Matriculas
         fields = '__all__'
+        
+        
+class CargaDocenteSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = api_models.CargaDocente
+        fields = '__all__'
     
