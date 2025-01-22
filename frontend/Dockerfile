@@ -15,7 +15,7 @@ RUN npm run build
 
 # Usa una imagen de Nginx para servir el frontend
 FROM nginx:alpine
-COPY --from=0 /app/build /usr/share/nginx/html
+COPY --from=0 /app/dist /usr/share/nginx/html
 
 # Expone el puerto 80
 EXPOSE 80
