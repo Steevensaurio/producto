@@ -19,6 +19,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["username"] = user.username
         token["cedula"] = user.cedula
         token["perfil"] = user.id_perfil_FK
+        token["perfil"] = user.id_perfil_FK.id if user.id_perfil_FK else None
 
         return token
 
