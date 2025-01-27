@@ -1,0 +1,16 @@
+steps:
+  # Construir y subir la imagen del backend
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/tutoeduca/backend', './backend']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/tutoeduca/backend']
+
+  # Construir y subir la imagen del frontend
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/tutoeduca/frontend', './frontend']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/tutoeduca/frontend']
+
+images:
+  - 'gcr.io/tutoeduca/backend'
+  - 'gcr.io/tutoeduca/frontend'

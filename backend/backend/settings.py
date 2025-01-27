@@ -28,9 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend-898635351469.us-central1.run.app']
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://backend-898635351469.us-central1.run.app", 'backend-898635351469.us-central1.run.app'
-]
 
 # Application definition
 INSTALLED_APPS = [
@@ -84,10 +81,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
+        "NAME": "basedepruebate",   #name of db
         "USER": "postgres",
         "PASSWORD": "admin",
-        "HOST": "34.41.146.171",
+        "HOST": "localhost", # or an IP address/host alias
         "PORT": "5432",
     }
 }

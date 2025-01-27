@@ -121,7 +121,7 @@ const Matriculas = () => {
                 title: 'Error',
                 text: errorMessage,
             });
-          });
+        });
     }
 
     return(

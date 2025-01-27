@@ -107,6 +107,17 @@ const AsignarCargaHoraria = () => {
     setAsignaciones(updatedAsignaciones)
   }
 
+  const quitarCamposDeAsignaciones = () => {
+    setAsignaciones((prevAsignaciones) =>
+      prevAsignaciones.map((asignacion) => {
+        const { tutor_nombre, asignatura_nombre, ...resto } = asignacion;
+        return resto;
+      })
+    );
+  };
+
+  
+
   const handleGuardar = async () => {
     try {
       // Aquí iría la lógica para guardar las asignaciones en el backend
@@ -251,7 +262,7 @@ const AsignarCargaHoraria = () => {
           </div>
           {asignaciones.length > 0 && (
             <button
-              onClick={handleGuardar}
+              onClick={quitarCamposDeAsignaciones}
               className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
             >
               Guardar Asignaciones
