@@ -131,7 +131,6 @@ const AsignarCargaHoraria = () => {
     }
   }
 
-  console.log(asignaciones);
   
   return (
     <div className="w-full mx-auto p-6">

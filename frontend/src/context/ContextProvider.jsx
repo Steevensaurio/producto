@@ -1,14 +1,24 @@
 import { createContext, useState } from "react";
+import Cookie from "js-cookie"
+import {jwtDecode} from 'jwt-decode'
 
 export const ProviderContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-  const [activeItem, setActiveItem] = useState("Dashboard");
-  const [subItem, setSubItem] = useState("");
-  const [soliActived, setSoliActive] = useState(false);
+  // const [activeItem, setActiveItem] = useState("Dashboard");
+  // const [subItem, setSubItem] = useState("");
+  // const [soliActived, setSoliActive] = useState(false);
   //vALIDOS
   const [open, setOpen] = useState({})
   const [itemActive, setItemActive] = useState("")
+
+  //obtener el perfil
+
+  const token = Cookie.get("access_token");
+  const user = jwtDecode(token)
+  const perfil = user.perfil
+
+  
   const itemsMenu = [
       {
         name: "Dashboard",
@@ -51,7 +61,7 @@ export const ContextProvider = ({ children }) => {
         name: "Tutorías",
         icon: "m15.214 5.982l1.402-1.401a1.982 1.982 0 0 1 2.803 2.803l-1.401 1.402m-2.804-2.804L6.98 14.216c-1.045 1.046-1.568 1.568-1.924 2.205S4.342 18.561 4 20c1.438-.342 2.942-.7 3.579-1.056s1.16-.879 2.205-1.924l8.234-8.234m-2.804-2.804l2.804 2.804M11 20h6",
         options: [
-          { id: "tutoria1", label: "Crear tutoría" },
+          { id: "tutoria1", label: perfil === 1 ? "Solicitar Tutoría" : "Crear Tutoría" },
           { id: "tutoria2", label: "Listado de Tutorías" },
           { id: "tutoria3", label: "Inscripciones" },
         ],
@@ -74,19 +84,50 @@ export const ContextProvider = ({ children }) => {
 
         ],
       },
-  ];
+  ].filter(item => {
+    //Administrador
+    if(perfil===null){
+      return true
+    }
+    //Administrador
+    if(perfil===4){
+      return true
+    }
+    //Representante
+    if(perfil===3){
+      return true
+    }
+    //Tutor
+    if(perfil===2){
+      return true
+    }
+    //Estudiante
+    if(perfil===1){
+      if (item.name === "Dashboard") {
+        return true
+      }
+      if (item.name === "Tutorías") {
+        return true
+      }
+      if (item.name === "Estudiantes") {
+        item.options = item.options.filter((option) => option.id === "student2")
+        return item.options.length > 0 
+      }
+      return false
+    }
+
+  })
 
   return (
     <ProviderContext.Provider
       value={{
-        activeItem,
-        setActiveItem,
+        // activeItem,
+        // setActiveItem,
         
         
-        soliActived,
-        setSoliActive,
-        subItem,
-        setSubItem,
+        
+        // subItem,
+        // setSubItem,
         //Validos
         open, 
         setOpen,

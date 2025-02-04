@@ -44,8 +44,15 @@ export const setUser = async () => {
     }
 
     if(isAccessTokenExpired(access_token)){
-        const response = getRefreshedToken(refresh_token)
-        setAuthUser(response.access, response.refresh)
+        // const response = getRefreshedToken(refresh_token)
+        // setAuthUser(response.access, response.refresh)
+        try { 
+            const response = await getRefreshedToken(); // Ahora se llama sin parámetros ✅
+            setAuthUser(response.access, response.refresh);
+        } catch (error) { 
+            console.error("Error al refrescar el token:", error); 
+            logout();  // Si falla, cierra sesión 
+        }
     }else{
         setAuthUser(access_token, refresh_token)
     }

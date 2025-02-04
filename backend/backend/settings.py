@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-s%xo%^1q$#xuswd($p$q76*6a85=a%be)&vz*i(3nqmt^_kb2!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend-898635351469.us-central1.run.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend-pmk1.onrender.com']
 
 
 # Application definition
@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "basedepruebate",   #name of db
-        "USER": "postgres",
-        "PASSWORD": "admin",
-        "HOST": "localhost", # or an IP address/host alias
+        "NAME": "tutoeducadb",   #name of db
+        "USER": "tutoeducaadmin",
+        "PASSWORD": "95TvGWb70XODy6IIhIxiVcFqJy9p6s97",
+        "HOST": "dpg-cuh3fed6l47c73bd8feg-a.oregon-postgres.render.com", # or an IP address/host alias
         "PORT": "5432",
     }
 }
@@ -130,7 +130,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=50),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,

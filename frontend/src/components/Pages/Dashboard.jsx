@@ -1,4 +1,4 @@
-import { useContext} from "react";
+import { useContext, useState, useEffect} from "react";
 import Inicio from "../Organisms/Inicio";
 import SideMenu from "../Organisms/SideMenu";
 import RegistroEstudiante from "../Organisms/RegistroEstudiante";
@@ -19,6 +19,7 @@ import { ProviderContext } from "../../context/ContextProvider";
 import ListadoAsignaturas from "../Organisms/ListadoAsignaturas";
 import Inscripciones from "../Organisms/Inscripciones";
 import AsignarCargaHoraria from "../Organisms/AsignarCargaHoraria";
+
 
 const Dashboard = () => {
   const {itemActive} = useContext(ProviderContext);

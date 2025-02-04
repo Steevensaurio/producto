@@ -165,8 +165,8 @@ class Matriculas(models.Model):
         db_table='matriculas'
         verbose_name = 'Matricula'
         verbose_name_plural = 'Matriculas'
-        
-   
+
+ 
 class Tutoria(models.Model):
     
     tema = models.CharField(max_length=100)
@@ -238,7 +238,7 @@ class InscripcionTutoria(models.Model):
     
     
     
- 
+
 class opcionTitulos(models.Model):
     codigo = models.CharField(max_length=3)
     titulo = models.CharField() 

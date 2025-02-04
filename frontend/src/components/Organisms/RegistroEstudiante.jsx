@@ -169,12 +169,12 @@ const RegistroEstudiante = () => {
                                     required
                                 />
                             </div>
-                            <div className="flex-1 space-y-2">
+                            <div className="space-y-2">
                                 <label className="block text-sm font-medium">Cedula</label>
                                 <div className="relative">
                                     <input 
                                         type="text" 
-                                        className={`text-xs custom-input w-full px-4 py-1 border rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                                        className={`text-sm custom-input w-full px-4 py-1 border rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                                             cedula && !validarCedulaEcuatoriana(cedula) ? 'border-red-500' : 'border-gray-300'
                                         }`}
                                         value={cedula}
@@ -196,36 +196,7 @@ const RegistroEstudiante = () => {
                                     <p className="text-red-500 text-xs mt-1">Cédula inválida</p>
                                 )}
                             </div>
-                        </div>
-                        <div className="flex space-x-4">
-                            
-                            <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Fecha de Nacimiento</label>
-                                <input 
-                                    type="date" 
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    value={fechaNacimiento}
-                                    onChange={(e) => setFechaNacimiento(e.target.value)}
-                                />
-                            </div>
-                            
-                            <div className="flex-1 space-y-2">
-                                <label className="block text-sm font-medium">Telefono</label>
-                                <input 
-                                    type="text" 
-                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    value={telefono}
-                                    placeholder="Ingresar número de telefono"
-                                    maxLength={10}
-                                    onChange={(e) =>{
-                                        const onlyNums = e.target.value.replace(/[^0-9]/g, '');
-                                        setTelefono(onlyNums);
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <div className="flex space-x-4">
-                            <div className="flex-1 space-y-2">
+                            <div className="space-y-2">
                                 <label className="block text-sm font-medium">Genero</label>
                                 <select 
                                     className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -238,6 +209,32 @@ const RegistroEstudiante = () => {
                                     <option value="Femenino">Femenino</option>
                                 </select>
                             </div>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium">Fecha de Nacimiento</label>
+                                <input 
+                                    type="date" 
+                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    value={fechaNacimiento}
+                                    onChange={(e) => setFechaNacimiento(e.target.value)}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium">Telefono</label>
+                                <input 
+                                    type="text" 
+                                    className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    value={telefono}
+                                    placeholder="09XXXXXXXX"
+                                    maxLength={10}
+                                    onChange={(e) =>{
+                                        const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+                                        setTelefono(onlyNums);
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex space-x-4">
+                            
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Representante</label>
                                 <select 
@@ -274,7 +271,6 @@ const RegistroEstudiante = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
-                         
                         <div className="flex space-x-4">
                             <div className="flex-1 space-y-2">
                                 <label className="block text-sm font-medium">Contraseña</label>
@@ -320,18 +316,18 @@ const RegistroEstudiante = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className="flex flex-col space-y-4 w-full items-end">
+                            <button 
+                                type="submit"
+                                className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
+                                    border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+                                    active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+                                onClick={(e) => handleSubmit(e)}
+                            >
+                                Registrar estudiante
+                            </button>
+                        </div>
                     </form>
-                </div>
-                <div className="flex flex-col space-y-4 w-[250px]">
-                    <button 
-                        type="submit"
-                        className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
-                            border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
-                            active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
-                        onClick={(e) => handleSubmit(e)}
-                    >
-                        Registrar
-                    </button>                    
                 </div>
             </div>
             
