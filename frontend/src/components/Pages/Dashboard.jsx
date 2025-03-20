@@ -19,6 +19,7 @@ import { ProviderContext } from "../../context/ContextProvider";
 import ListadoAsignaturas from "../Organisms/ListadoAsignaturas";
 import Inscripciones from "../Organisms/Inscripciones";
 import AsignarCargaHoraria from "../Organisms/AsignarCargaHoraria";
+import Predicciones from "../Organisms/Predicciones";
 
 
 const Dashboard = () => {
@@ -80,6 +81,10 @@ const Dashboard = () => {
         return <ListadoCurso/>
       case "curso3":
         return <div>Configuracion 3</div>
+
+      //Modulo de Predicciones
+      case "Predicciones":
+        return <Predicciones/>
 
       default:
         return <Inicio />;

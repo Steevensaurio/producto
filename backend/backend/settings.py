@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "tutoeducadb",   #name of db
-        "USER": "tutoeducaadmin",
-        "PASSWORD": "95TvGWb70XODy6IIhIxiVcFqJy9p6s97",
-        "HOST": "dpg-cuh3fed6l47c73bd8feg-a.oregon-postgres.render.com", # or an IP address/host alias
+        "NAME": "basedepruebate",   #name of db
+        "USER": "postgres",
+        "PASSWORD": "admin",
+        "HOST": "localhost", # or an IP address/host alias
         "PORT": "5432",
     }
 }
