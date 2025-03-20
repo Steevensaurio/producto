@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import { API_BASE_URL } from "../../utils/constants";
 
 const Inscripciones = () => {
 
@@ -16,21 +17,12 @@ const Inscripciones = () => {
         
         const estudiantes = async () => {
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/estudiante/listado/');
+                const response = await axios.get(`${API_BASE_URL}estudiante/listado/`);
                 setGetEstudiantes(response.data)
             } catch (error){
                 console.log(error);
             }
         }
-        const cursos = async () => {
-            try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/curso/listado/');
-                setGetCursos(response.data)
-            } catch (error){
-                console.log(error);
-            }
-        }
-        cursos();
         estudiantes();
 
     }, [])
@@ -179,6 +171,7 @@ const Inscripciones = () => {
                     </form>
                 </div>
             </div>
+            <h1 className="text-6xl font-bold text-red-600 mb-2">PENDIENTE POR TERMINAR</h1>
         </div>
     )
 }

@@ -1,5 +1,4 @@
 import Button from "../Atoms/Button";
-import Input from "../Atoms/Input";
 import { logout } from "../../utils/auth";
 import { Link } from "react-router-dom";
 
@@ -37,7 +36,6 @@ const NavBar = () => {
           <Link
             to="/login"
             className="bg-white text-center w-40 rounded-2xl h-12 relative text-black text-md font-bold group"
-            // className="bg-sky-600 min-w-auto font-bold p-2 mr-1 rounded-xl hover:bg-white"
             onClick={() => logout()}
           >
             <div

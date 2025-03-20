@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import { API_BASE_URL } from "../../utils/constants";
 
 const CrearCurso = () => {
 
@@ -15,7 +16,7 @@ const CrearCurso = () => {
     useEffect(()=>{
         const cursos = async () => {
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/cursos/');
+                const response = await axios.get(`${API_BASE_URL}cursos/`);
                 setGetCursos(response.data)
             } catch (error){
                 console.log(error);
@@ -23,7 +24,7 @@ const CrearCurso = () => {
         }
         const paralelos = async () => {
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/paralelos/');
+                const response = await axios.get(`${API_BASE_URL}paralelos/`);
                 setGetParalelos(response.data)
             } catch (error){
                 console.log(error);
@@ -57,7 +58,7 @@ const CrearCurso = () => {
         const cursos = { curso, paralelo};
 
         // Aquí haces la llamada a la API para crear el curso usando Axios
-        axios.post('http://127.0.0.1:8000/api/v1/curso/crear/', cursos)
+        axios.post(`${API_BASE_URL}curso/crear/`, cursos)
           .then(response => {
             console.log('Curso creado:', response.data);
 

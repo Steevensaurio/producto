@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
 import validarCedulaEcuatoriana from "../../utils/validarCedula";
+import { API_BASE_URL } from "../../utils/constants";
 
 
 const RegistroEstudiante = () => {
@@ -29,7 +30,7 @@ const RegistroEstudiante = () => {
     useEffect(()=>{
         const representantes = async () => {
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/representante/listado/');
+                const response = await axios.get(`${API_BASE_URL}representante/listado/`);
                 setGetRepresentante(response.data)
                 
                 
@@ -115,7 +116,7 @@ const RegistroEstudiante = () => {
             
         
             // Enviar solicitud al backend
-            axios.post('http://127.0.0.1:8000/api/v1/estudiante/registrar/', { user, estudiante })
+            axios.post(`${API_BASE_URL}estudiante/registrar/`, { user, estudiante })
                 .then(response => {
 
                     console.log('Usuario creado:', response.data);

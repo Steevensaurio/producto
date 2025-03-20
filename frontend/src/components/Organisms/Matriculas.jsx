@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../../utils/constants";
 import axios from "axios";
 import Swal from 'sweetalert2';
 
@@ -18,7 +19,7 @@ const Matriculas = () => {
     useEffect(()=>{
         const estudiantes = async () => {
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/estudiante/listado/');
+                const response = await axios.get(`${API_BASE_URL}estudiante/listado/`);
                 setGetEstudiantes(response.data)
             } catch (error){
                 console.log(error);
@@ -26,7 +27,7 @@ const Matriculas = () => {
         }
         const cursos = async () => {
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/curso/listado/');
+                const response = await axios.get(`${API_BASE_URL}curso/listado/`);
                 setGetCursos(response.data)
             } catch (error){
                 console.log(error);
@@ -92,10 +93,7 @@ const Matriculas = () => {
             año_lectivo: year,
         }
 
-        console.log(matricula);
-        
-
-        axios.post('http://127.0.0.1:8000/api/v1/matricula/', matricula)
+        axios.post(`${API_BASE_URL}matricula/`, matricula)
           .then(response => {
             
             setEstudiante()

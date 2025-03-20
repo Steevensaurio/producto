@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { API_BASE_URL } from "../../utils/constants";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
@@ -25,7 +25,7 @@ const ListadoMatriculas = () => {
   
     // Función para obtener las matrículas
     const fetchMatriculas = (cursoId = null, seccion = null, añolectivo = null) => {
-        let url = 'http://127.0.0.1:8000/api/v1/matricula/listado/';
+        let url = `${API_BASE_URL}matricula/listado/`;
         const params = [];
 
         if (cursoId) {
@@ -58,7 +58,7 @@ const ListadoMatriculas = () => {
   
     // Función para obtener los cursos
     const fetchCursos = () => {
-      axios.get('http://127.0.0.1:8000/api/v1/curso/listado/')  // Asegúrate de que esta URL sea la correcta
+      axios.get(`${API_BASE_URL}curso/listado/`)  // Asegúrate de que esta URL sea la correcta
         .then(response => {
           setCursos(response.data);  // Actualizamos el estado con los datos de los cursos
         })
@@ -68,7 +68,7 @@ const ListadoMatriculas = () => {
     };
     
     const fetchPeriodos = () => {
-      axios.get('http://127.0.0.1:8000/api/v1/periodos/')  // Asegúrate de que esta URL sea la correcta
+      axios.get(`${API_BASE_URL}periodos/`)  // Asegúrate de que esta URL sea la correcta
         .then(response => {
           setAñosLectivos(response.data);  // Actualizamos el estado con los datos de los cursos
         })

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Swal from "sweetalert2"
 import axios from "axios"
+import { API_BASE_URL } from "../../utils/constants"
 
 const CrearAsignatura = () => {
 
@@ -36,7 +37,7 @@ const CrearAsignatura = () => {
         const asignaturas = { asignatura, codigo, descripcion,  estado,};
 
         // Aquí haces la llamada a la API para crear el curso usando Axios
-        axios.post('http://127.0.0.1:8000/api/v1/asignatura/crear/', asignaturas)
+        axios.post(`${API_BASE_URL}asignatura/crear/`, asignaturas)
           .then(response => {
             console.log('Asignatura creada:', response.data);
 
@@ -51,7 +52,7 @@ const CrearAsignatura = () => {
             });
             
           })
-          .catch(error => {
+          .catch(() => {
             Swal.fire({
                 icon: 'error', // Icono de error
                 title: 'Error',

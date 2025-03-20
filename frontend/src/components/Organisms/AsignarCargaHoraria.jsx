@@ -3,6 +3,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
+import { API_BASE_URL } from "../../utils/constants"
 
 const AsignarCargaHoraria = () => {
   const [nombre, setNombre] = useState("")
@@ -21,9 +22,9 @@ const AsignarCargaHoraria = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const tutoresResponse = await axios.get("http://127.0.0.1:8000/api/v1/tutor/listado/")
+        const tutoresResponse = await axios.get(`${API_BASE_URL}tutor/listado/`)
         setGetTutores(tutoresResponse.data)
-        const asignaturasResponse = await axios.get("http://127.0.0.1:8000/api/v1/asignatura/listado/")
+        const asignaturasResponse = await axios.get(`${API_BASE_URL}asignatura/listado/`)
         setGetAsignaturas(asignaturasResponse.data)
       } catch (error) {
         console.log(error)

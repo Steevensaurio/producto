@@ -31,7 +31,7 @@ const RegistroRepresentante = () => {
     useEffect(()=>{
         const niveles = async () => {
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/niveles/');
+                const response = await axios.get(`${API_BASE_URL}niveles/`);
                 setGetNivelesEstudio(response.data)
             } catch (error){
                 console.log(error);
@@ -106,10 +106,7 @@ const RegistroRepresentante = () => {
             telefono_auxiliar: telefonoAuxiliar,
         }
 
-        console.log({user, representante});
-        
-    
-        axios.post('http://127.0.0.1:8000/api/v1/representante/registrar/', {user, representante})
+        axios.post(`${API_BASE_URL}representante/registrar/`, {user, representante})
           .then(response => {
             console.log('Usuario creado:', response.data);
             

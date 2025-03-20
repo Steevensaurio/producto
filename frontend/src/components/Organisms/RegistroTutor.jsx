@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
 import validarCedulaEcuatoriana from "../../utils/validarCedula";
+import { API_BASE_URL } from "../../utils/constants";
 
 
 
@@ -32,7 +33,7 @@ const RegistroTutor = () => {
     useEffect(()=>{
         const titulos = async () => {
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/titulos/');
+                const response = await axios.get(`${API_BASE_URL}titulos/`);
                 setGetTitulos(response.data)
             } catch (error){
                 console.log(error);
@@ -115,7 +116,7 @@ const RegistroTutor = () => {
         console.log({user, tutor});
         
     
-        axios.post('http://127.0.0.1:8000/api/v1/tutor/registrar/', {user, tutor})
+        axios.post(`${API_BASE_URL}tutor/registrar/`, {user, tutor})
           .then(response => {
             console.log('Usuario creado:', response.data);
             // Limpiar los campos del formulario

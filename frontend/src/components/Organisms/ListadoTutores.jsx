@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { API_BASE_URL} from "../../utils/constants";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
@@ -19,7 +19,7 @@ const ListadoTutores = () => {
     const [tutor, setTutor] = useState([]);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/v1/tutor/listado/')
+        axios.get(`${API_BASE_URL}tutor/listado/`)
         .then(response => {
             setTutor(response.data);
         })

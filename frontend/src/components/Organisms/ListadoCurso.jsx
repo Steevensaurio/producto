@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { API_BASE_URL } from "../../utils/constants";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
@@ -19,7 +19,7 @@ const ListadoCurso = () => {
     const [cursos, setCursos] = useState([]);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/v1/curso/listado/')
+        axios.get(`${API_BASE_URL}curso/listado/`)
         .then(response => {
             setCursos(response.data);
             console.log(cursos);

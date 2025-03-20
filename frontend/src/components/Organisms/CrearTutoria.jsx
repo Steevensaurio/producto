@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import { API_BASE_URL } from "../../utils/constants";
 
 const CrearTutoria = () => {
     const [tema, setTema] = useState("");
@@ -18,7 +19,7 @@ const CrearTutoria = () => {
     useEffect(()=>{
         const tutores = async () => {
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/v1/tutor/listado/');
+                const response = await axios.get(`${API_BASE_URL}tutor/listado/`);
                 setGetTutores(response.data)
             } catch (error){
                 console.log(error);
@@ -65,7 +66,7 @@ const CrearTutoria = () => {
         console.log(tutoria);
         
 
-        axios.post('http://127.0.0.1:8000/api/v1/tutoria/asignar/', tutoria)
+        axios.post(`${API_BASE_URL}tutoria/asignar/`, tutoria)
           .then(response => {
             console.log('Curso creado:', response.data);
 

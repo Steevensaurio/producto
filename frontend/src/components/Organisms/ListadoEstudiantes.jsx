@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { API_BASE_URL } from "../../utils/constants";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
@@ -9,7 +9,6 @@ import '../../styles/styles.css'
 import 'primereact/resources/themes/lara-light-cyan/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-// import 'primeflex/primeflex.css';
 import 'primereact/resources/themes/saga-blue/theme.css';  // Tema PrimeReact
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css'; 
@@ -19,7 +18,7 @@ const ListadoEstudiantes = () => {
     const [estudiantes, setEstudiantes] = useState([]);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/v1/estudiante/listado/')
+        axios.get(`${API_BASE_URL}estudiante/listado/`)
         .then(response => {
             setEstudiantes(response.data);
         })
