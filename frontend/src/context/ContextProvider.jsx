@@ -5,10 +5,6 @@ import {jwtDecode} from 'jwt-decode'
 export const ProviderContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-  // const [activeItem, setActiveItem] = useState("Dashboard");
-  // const [subItem, setSubItem] = useState("");
-  // const [soliActived, setSoliActive] = useState(false);
-  //vALIDOS
   const [open, setOpen] = useState({})
   const [itemActive, setItemActive] = useState("")
 
