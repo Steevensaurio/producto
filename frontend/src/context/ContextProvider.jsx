@@ -12,7 +12,6 @@ export const ContextProvider = ({ children }) => {
 
   const user = jwtDecode(Cookie.get("access_token"));
   const perfil = user.perfil
-
   
   const itemsMenu = [
       {
