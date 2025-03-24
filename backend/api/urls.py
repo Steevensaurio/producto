@@ -40,6 +40,7 @@ urlpatterns = [
     path("tutoria/solicitud/listado/", api_views.SolicitudTutoriaListView.as_view()),
     path("tutoria/listado/", api_views.TutoriasListView.as_view()),
     path("tutoria/inscripciones/", api_views.InscripcionesView.as_view()),
+    path("tutoria/inscripciones/listado/", api_views.InscripcionesListView.as_view()),
     
     
     #OTROS
@@ -50,7 +51,7 @@ urlpatterns = [
     path("periodos/", api_views.AniosLectivosListView.as_view(), name="peripdo-list"),
     path('tutor-id/', api_views.ObtenerIdTutorView.as_view(), name='tutor-id'),
     path('estudiante-id/', api_views.ObtenerIdEstudianteView.as_view(), name='tutor-id'),
-    
+    path("solicitud/<int:id>/actualizar-estado/", api_views.ActualizarEstadoSolicitud.as_view(), name="actualizar-estado"),
     
     
     

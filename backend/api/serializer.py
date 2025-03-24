@@ -214,6 +214,14 @@ class InscripcionSerializer(serializers.ModelSerializer):
     class Meta:
         model = api_models.InscripcionTutoria
         fields = '__all__'
+
+class InscripcionDataSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = api_models.InscripcionTutoria
+        fields = '__all__'
+        depth = 2
+    
         
 
 ###############################
@@ -307,6 +315,13 @@ class TutoriaAsignarSerializer(serializers.ModelSerializer):
 
 class TutoriaSolicitudSerializer(serializers.ModelSerializer):
     
+    class Meta:
+        model = api_models.Solicitud
+        fields = '__all__'
+
+class TutoriaSolicitudListSerializer(serializers.ModelSerializer):
+    id_tutor_FK = TutorListSerializer()
+    id_user_FK = UserSerializer()
     class Meta:
         model = api_models.Solicitud
         fields = '__all__'

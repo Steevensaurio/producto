@@ -11,6 +11,7 @@ from .models import Tutoria, Curso, Representante,Solicitud, InscripcionTutoria,
 from .serializer import TutoriaSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from django.shortcuts import get_object_or_404
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -102,7 +103,7 @@ class SolicitudTutoriaView(generics.CreateAPIView):
 class SolicitudTutoriaListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     queryset = Solicitud.objects.all()
-    serializer_class = api_serializer.TutoriaSolicitudSerializer
+    serializer_class = api_serializer.TutoriaSolicitudListSerializer
     
 class TutoriasListView(generics.ListAPIView):
     permission_classes = [AllowAny]
@@ -239,6 +240,10 @@ class MatriculaListView(generics.ListAPIView):
 class InscripcionesView (generics.CreateAPIView):
     queryset = InscripcionTutoria.objects.all()
     serializer_class = api_serializer.InscripcionSerializer
+
+class InscripcionesListView (generics.ListAPIView):
+    queryset = InscripcionTutoria.objects.all()
+    serializer_class = api_serializer.InscripcionDataSerializer
     
     
 
@@ -288,3 +293,17 @@ class ObtenerIdEstudianteView(APIView):
             return Response({"estudiante_id": estudiante.id}, status=status.HTTP_200_OK)
         except Estudiante.DoesNotExist:
             return Response({"estudiante_id": None}, status=status.HTTP_200_OK)  
+        
+
+class ActualizarEstadoSolicitud(APIView):
+    def put(self, request, id):
+        solicitud = get_object_or_404(Solicitud, id=id)
+        nuevo_estado = request.data.get("estado")
+
+        if not nuevo_estado:
+            return Response({"error": "El campo 'estado' es requerido."}, status=status.HTTP_400_BAD_REQUEST)
+
+        solicitud.estado = nuevo_estado
+        solicitud.save()
+
+        return Response({"message": "Estado actualizado correctamente"}, status=status.HTTP_200_OK)

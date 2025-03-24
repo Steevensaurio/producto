@@ -20,6 +20,8 @@ import ListadoAsignaturas from "../Organisms/ListadoAsignaturas";
 import Inscripciones from "../Organisms/Inscripciones";
 import AsignarCargaHoraria from "../Organisms/AsignarCargaHoraria";
 import Predicciones from "../Organisms/Predicciones";
+import ListadoSolicitud from "../Organisms/ListadoSolicitud";
+import ListadoInscripciones from "../Organisms/MisInscripciones";
 
 
 const Dashboard = () => {
@@ -65,6 +67,10 @@ const Dashboard = () => {
         return <ListadoTutorias/>
       case "tutoria3":
         return <Inscripciones/>
+      case "tutoria4":
+        return <ListadoSolicitud/>
+      case "tutoria5":
+        return <ListadoInscripciones/>
       
       //Modulo Representantes
       case "padre1":

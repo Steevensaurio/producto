@@ -58,6 +58,7 @@ export const ContextProvider = ({ children }) => {
           { id: "tutoria1", label: perfil === 1 ? "Solicitar Tutoría" : "Crear Tutoría" },
           { id: "tutoria2", label: "Listado de Tutorías" },
           { id: "tutoria3", label: "Inscripciones" },
+          { id: "tutoria5", label: "Mis inscripciones" },
           { id: "tutoria4", label: "Solicitudes" },
         ],
       },
