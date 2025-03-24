@@ -40,7 +40,6 @@ export const ContextProvider = ({ children }) => {
         options: [
           { id: "tutor1", label: "Registrar tutor" },
           { id: "tutor2", label: "Listado de Tutores" },
-          { id: "tutor3", label: "Carga Horaria" },
         ],
       },
       {
@@ -76,7 +75,6 @@ export const ContextProvider = ({ children }) => {
         options: [
           { id: "curso1", label: "Crear curso" },
           { id: "curso2", label: "Listado de Cursos" },
-          { id: "curso3", label: "Asignar Plan de Estudios" },
 
         ],
       },
