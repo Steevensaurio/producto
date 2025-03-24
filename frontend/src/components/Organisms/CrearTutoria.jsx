@@ -3,6 +3,8 @@ import axios from "axios";
 import Swal from 'sweetalert2';
 import { API_BASE_URL } from "../../utils/constants";
 import BtnForm from "../Atoms/BtnForm";
+import Cookie from "js-cookie"
+import {jwtDecode} from 'jwt-decode'
 
 const CrearTutoria = () => {
     const [tema, setTema] = useState("");
@@ -14,8 +16,12 @@ const CrearTutoria = () => {
     const [horaFin, setHoraFin] = useState('');
     const [tipo, setTipo] = useState('');
     const [asignarTutor, setAsignarTutor] = useState();
+    const [idTutor, setIdTutor] = useState();
 
     const [getTutores, setGetTutores] = useState([]);
+
+    const user = jwtDecode(Cookie.get("access_token"));
+    const perfil = user.perfil
 
     useEffect(()=>{
         const tutores = async () => {
@@ -27,7 +33,33 @@ const CrearTutoria = () => {
             }
         }
         tutores();
-    }, [])
+        obtenerIdTutor();
+    }, []) 
+    
+    useEffect(() => {
+        setAsignarTutor(idTutor !== null || undefined ? String(idTutor) : asignarTutor);
+    });
+
+    const obtenerIdTutor = async () => {
+        const token = Cookie.get("access_token");
+    
+        if (!token) {
+            return;
+        }
+    
+        try {
+            const response = await axios.get(`${API_BASE_URL}tutor-id/`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setIdTutor(response.data.tutor_id);
+            
+            // console.log("✅ Respuesta del backend:", response.data);
+        } catch (error) {
+            // console.error("❌ Error al obtener el ID del tutor:", error.response);
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -43,7 +75,8 @@ const CrearTutoria = () => {
             tipo,
             asignarTutor,
         ];
-        if (fields.some(field => field.trim() === '')) {
+        console.log(fields);
+        if (fields.some(field => typeof field !== 'string' || field.trim() === '')) {
             Swal.fire({
                 icon: 'error',
                 title: 'Campos vacíos',
@@ -62,41 +95,50 @@ const CrearTutoria = () => {
             hora_fin: horaFin,
             tipo,
             id_tutor_FK: asignarTutor,
-        };
+        }; 
 
-        console.log(tutoria);
+        const token = Cookie.get("access_token");
+        const endpoint = perfil === 1 
+            ? `${API_BASE_URL}tutoria/solicitud/`  // Si perfil es 1
+            : `${API_BASE_URL}tutoria/asignar/`;
+
+            axios.post(endpoint, tutoria, {
+                headers: {
+                    Authorization: `Bearer ${token}`  // Envía el token en los headers
+                }
+            })
+            .then(response => {
+                Swal.fire({
+                    icon: 'success',
+                    title: perfil === 1 ? 'Solicitud enviada' : 'Tutoría creada',
+                    text: perfil === 1 
+                        ? 'Tu solicitud de tutoría ha sido enviada correctamente. Espera la confirmación de un tutor.'
+                        : 'La tutoría ha sido creada y asignada con éxito.',
+                });
         
-
-        axios.post(`${API_BASE_URL}tutoria/asignar/`, tutoria)
-          .then(response => {
-            console.log('Curso creado:', response.data);
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Registro exitoso',
-                text: 'Tutoria creada exitosamente.',
+                // Limpiar formulario
+                setTema('');
+                setDescripcion('');
+                setModalidad('');
+                setSeccion('');
+                setFecha('');
+                setHoraInicio('');
+                setHoraFin('');
+                setTipo('');
+                setAsignarTutor('');
+            })
+            .catch(error => {
+                console.log(error);
+        
+                Swal.fire({
+                    icon: 'error',
+                    title: perfil === 1 ? 'Error en la solicitud' : 'Error al crear la tutoría',
+                    text: perfil === 1 
+                        ? 'No se pudo enviar la solicitud. Inténtalo nuevamente más tarde.'
+                        : 'Hubo un problema al crear la tutoría. Verifica los datos e inténtalo otra vez.',
+                    confirmButtonText: 'OK',
+                });
             });
-
-            setTema('')
-            setDescripcion('')
-            setModalidad('')
-            setSeccion('')
-            setFecha('')
-            setHoraInicio('')
-            setHoraFin('')
-            setTipo('')
-            setAsignarTutor('')
-          })
-          .catch(error => {
-            console.log(error);
-            
-            Swal.fire({
-                icon: 'error', // Icono de error
-                title: 'Error al crear la tutoria',
-                text: 'No se pudo crear la tutoría. Por favor, inténtalo otra vez.',
-                confirmButtonText: 'OK',
-            });
-          });
 
     }
 
@@ -113,7 +155,7 @@ const CrearTutoria = () => {
     return(
         <div className="w-full mx-auto p-6">
             <h1 className="text-2xl md:text-2xl font-bold text-gray-800 m-3">
-                Crear nueva tutoría
+                {perfil === 1 ? 'Solicitar tutoría' : 'Crear nueva tutoría'}
             </h1>
             <div className="flex">
                 <div className="bg-white shadow-md rounded-lg p-6 mb-1 flex-grow mr-6">
@@ -228,22 +270,27 @@ const CrearTutoria = () => {
                             </div>
                             
                         </div>
+
+                        {
+                            perfil !== 2 && (
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium">Tutor</label>
+                                    <select 
+                                        className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        onChange={handleTutorChange}
+                                        value={asignarTutor}
+                                    >
+                                        <option value="" hidden >Seleccione un tutor</option>
+                                        {getTutores.map(tutor => (
+                                            <option key={tutor.id} value={tutor.id}>
+                                                {tutor.nivel_estudios}. {tutor.id_user_FK.full_name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )
+                        }
                         
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium">Tutor</label>
-                            <select 
-                                className="text-sm custom-input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                onChange={handleTutorChange}
-                                value={asignarTutor}
-                            >
-                                <option value="" hidden >Seleccione un tutor</option>
-                                {getTutores.map(tutor => (
-                                    <option key={tutor.id} value={tutor.id}>
-                                        {tutor.nivel_estudios}. {tutor.id_user_FK.full_name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
                         <BtnForm label="Crear tutoría" onClick={handleSubmit} />
                     </form>
                 </div>

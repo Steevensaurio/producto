@@ -299,6 +299,18 @@ class TutorListSerializer(serializers.ModelSerializer):
 ### Modulo de Creación de Tutoría ###
 #####################################      
 
+class TutoriaAsignarSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = api_models.Tutoria
+        fields = '__all__'
+
+class TutoriaSolicitudSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = api_models.Solicitud
+        fields = '__all__'
+
 class TutoriaSerializer(serializers.ModelSerializer):
     
     id_tutor_FK = TutorListSerializer()

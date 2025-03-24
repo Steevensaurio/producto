@@ -3,30 +3,81 @@ import axios from "axios";
 import Swal from 'sweetalert2';
 import { API_BASE_URL } from "../../utils/constants";
 import BtnForm from "../Atoms/BtnForm";
+import Cookie from "js-cookie"
+import {jwtDecode} from 'jwt-decode'
+
+const decodeToken = (token) => {
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error("Error decoding JWT:", error);
+      return null;
+    }
+  };
 
 const Inscripciones = () => {
 
     const [estudiante, setEstudiante] = useState();
     const [nombre, setNombre] = useState('');
-    const [curso, setCurso] = useState();
-    const [jornada, setJornada] = useState('');
-    const [year, setYear] = useState('');
+    const [tutoria, setTutoria] = useState();
+    const [tema, setTema] = useState('');
+    const [estudianteId, setEstudianteId] = useState(null);
     const [getEstudiantes, setGetEstudiantes] = useState([]);
+    const [getTutorias, setGetTutorias] = useState([]);
     const [filteredEstudiantes, setFilteredEstudiantes] = useState([]);
+    const [filteredTutorias, setFilteredTutorias] = useState([]);
+    const [fullName, setFullName] = useState("")
+    const user = jwtDecode(Cookie.get("access_token"));
+    const perfil = user.perfil
 
-    useEffect(()=>{
-        
-        const estudiantes = async () => {
-            try{
-                const response = await axios.get(`${API_BASE_URL}estudiante/listado/`);
-                setGetEstudiantes(response.data)
-            } catch (error){
-                console.log(error);
+    useEffect(() => {
+        const obtenerDatos = async () => {
+            try {
+                const token = Cookie.get("access_token");
+                if (!token) {
+                    console.error("No se encontró el token de acceso");
+                    return;
+                }
+    
+                // Decodificar el token para obtener full_name
+                const user = decodeToken(token);
+                if (user?.full_name) {
+                    setFullName(user.full_name); // Asignamos el full_name
+                    if (perfil === 1) {
+                        setNombre(user.full_name); // Si es perfil 1, también se asigna a nombre
+                    }
+                } else {
+                    console.warn("full_name no se encontró en el token");
+                }
+    
+                // Llamadas a la API
+                const [estudianteResp, estudiantesResp, tutoriasResp] = await Promise.all([
+                    axios.get(`${API_BASE_URL}estudiante-id/`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    }),
+                    axios.get(`${API_BASE_URL}estudiante/listado/`),
+                    axios.get(`${API_BASE_URL}tutoria/listado/`)
+                ]);
+    
+                setEstudianteId(estudianteResp.data.estudiante_id);
+                if (perfil === 1) {
+                    setEstudiante(estudianteResp.data.estudiante_id);
+                    setNombre(estudianteResp.data.estudiante_name); // Asegurar que el nombre del estudiante se setea
+                }
+    
+                setGetEstudiantes(estudiantesResp.data);
+                setGetTutorias(tutoriasResp.data);
+            } catch (error) {
+                console.error("Error obteniendo datos:", error);
             }
-        }
-        estudiantes();
-
-    }, [])
+        };
+    
+        obtenerDatos(); // Llamada inicial
+    
+        const interval = setInterval(obtenerDatos, 10000); // Se ejecuta cada 10 segundos
+    
+        return () => clearInterval(interval); // Limpia el intervalo cuando se desmonta
+    }, [perfil]); 
 
 
     const handleEstudiantesChange = (e) => {
@@ -51,13 +102,34 @@ const Inscripciones = () => {
     };
 
 
+
+
+    const handleTutoriaChange = (e) => {
+        const query = e.target.value;
+        setTema(query);
+        console.log(query)
+
+        if (query.length > 0) {
+            const filtered = getTutorias.filter((tutoria) =>
+            tutoria.tema.toLowerCase().includes(query.toLowerCase())
+            );
+            setFilteredTutorias(filtered);
+        } else {
+            setFilteredTutorias([]);
+        }
+    };
+
+    const handleTutoriaSelect = (tutoria) => {
+        setTema(tutoria.tema)
+        setTutoria(tutoria.id);
+        setFilteredTutorias([]);
+    };
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!estudiante || estudiante === '' ||
-            !curso || curso === '' ||
-            !jornada || jornada === '' ||
-            !year || year === '') {
+        if (!estudiante || estudiante === '') {
             Swal.fire({
                 icon: 'error',
                 title: 'Campos vacíos',
@@ -65,24 +137,22 @@ const Inscripciones = () => {
             });
             return;
         }
-        const matricula = {
-            estudiante,
-            curso,
-            jornada,
-            año_lectivo: year,
+        const inscripcion = {
+            id_estudiante_FK: estudiante,
+            id_tutoria_FK: tutoria,
         }
 
-        console.log(matricula);
-        
+console.log(inscripcion);
 
-        axios.post('http://127.0.0.1:8000/api/v1/matricula/', matricula)
+
+        axios.post(`${API_BASE_URL}tutoria/inscripciones/`, inscripcion)
           .then(response => {
             
             setEstudiante()
             setNombre('')
-            setCurso()
-            setJornada('')
-            setYear('')
+            setTutoria()
+            setTema('')
+         
 
             Swal.fire({
                 icon: 'success',
@@ -115,11 +185,12 @@ const Inscripciones = () => {
                         <div className="flex-1 space-y-2 relative">
                             <label className="block text-sm font-medium">Estudiante</label>
                             <input
-                            type="text"
-                            className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            value={nombre}
-                            onChange={handleEstudiantesChange}
-                            placeholder="Escriba el nombre del estudiante"
+                                type="text"
+                                className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                value={perfil===1 ? fullName : nombre}
+                                onChange={handleEstudiantesChange}
+                                placeholder="Escriba el nombre del estudiante"
+                                disabled={perfil === 1}
                             />
                             {filteredEstudiantes.length > 0 && (
                             <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
@@ -140,19 +211,19 @@ const Inscripciones = () => {
                             <input
                             type="text"
                             className="text-sm custom-input w-full px-4 py-1 border border-gray-300 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            value={nombre}
-                            onChange={handleEstudiantesChange}
+                            value={tema}
+                            onChange={handleTutoriaChange}
                             placeholder="Escriba el tema de la tutoría"
                             />
-                            {filteredEstudiantes.length > 0 && (
+                            {filteredTutorias.length > 0 && (
                             <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                                {filteredEstudiantes.map((student) => (
+                                {filteredTutorias.map((tutoria) => (
                                 <li
-                                    key={student.id}
+                                    key={tutoria.id}
                                     className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
-                                    onClick={() => handleStudentSelect(student)}
+                                    onClick={() => handleTutoriaSelect(tutoria)}
                                 >
-                                    {student.id_user_FK.full_name}
+                                    {tutoria.tema}
                                 </li>
                                 ))}
                             </ul>
@@ -162,7 +233,6 @@ const Inscripciones = () => {
                     </form>
                 </div>
             </div>
-            <h1 className="text-6xl font-bold text-red-600 mb-2">PENDIENTE POR TERMINAR</h1>
         </div>
     )
 }

@@ -274,3 +274,49 @@ class opcionParalelo(models.Model):
     
     def __str__(self):
         return self.paralelos
+    
+
+
+
+
+class Solicitud(models.Model):
+    
+    tema = models.CharField(max_length=100)
+    descripcion = models.CharField(null=True, blank=True)
+    modalidad = models.CharField(max_length=100, choices=[('Presencial', 'Presencial'), ('Virtual', 'Virtual')])
+    seccion = models.CharField(max_length=10, choices=[('Matutina', 'Matutina'), ('Vespertina', 'Vespertina')], default='Matutina')
+    fecha = models.DateField()
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+    tipo = models.CharField(
+        max_length=10,
+        choices=[
+            ('Grupal', 'Grupal'),
+            ('Individual', 'Individual'),
+        ],
+        null=True,
+        blank=True
+    )
+    
+    estado = models.CharField(
+        max_length=20,
+        choices=[
+            ('Pendiente', 'Pendiente'),
+            ('Aprobada', 'Aprobada'),
+            ('Rechazada', 'Rechazada'),
+        ],
+        null=True,
+        blank=True,
+        default='Pendiente'
+    )
+    
+    id_tutor_FK = models.ForeignKey(Tutor, on_delete=models.SET_NULL, null=True, blank=True)
+    id_user_FK = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.tema
+    
+    class Meta: 
+        db_table='solicitud'
+        verbose_name = 'Solicitud'
+        verbose_name_plural = 'Solicitudes'

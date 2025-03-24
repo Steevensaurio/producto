@@ -158,7 +158,6 @@ const ListadoEstudiantes = () => {
               <Column header="Estado" body={statusBodyTemplate} />
               <Column header="Genero" body={generoBodyTemplate} />
               <Column header="Correo" body={correoBodyTemplate} />
-              <Column header="Editar" body={editBodyTemplate} style={{ width: '4rem' }} />
 
             </DataTable>
           </div>

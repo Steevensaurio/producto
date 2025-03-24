@@ -7,9 +7,10 @@ from api import serializer as api_serializer
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, status
-from .models import Tutoria, Curso, Representante, InscripcionTutoria, Estudiante, Tutor, opcionParalelo, opcionCurso, Matriculas, opcionTitulos, Asignaturas, opcionNivelEstudios, CargaDocente
+from .models import Tutoria, Curso, Representante,Solicitud, InscripcionTutoria, Estudiante, Tutor, opcionParalelo, opcionCurso, Matriculas, opcionTitulos, Asignaturas, opcionNivelEstudios, CargaDocente
 from .serializer import TutoriaSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -88,7 +89,20 @@ class RegistroUsuarioEstudianteView(generics.CreateAPIView):
     
 class AsignarTutoriaView(generics.CreateAPIView):
     permission_classes = [AllowAny]
-    serializer_class = api_serializer.TutoriaSerializer
+    serializer_class = api_serializer.TutoriaAsignarSerializer
+
+class SolicitudTutoriaView(generics.CreateAPIView):
+    queryset = Solicitud.objects.all()
+    serializer_class = api_serializer.TutoriaSolicitudSerializer
+    permission_classes = [AllowAny]  # Solo usuarios autenticados pueden crear solicitudes
+
+    def perform_create(self, serializer):
+        serializer.save(id_user_FK=self.request.user) 
+
+class SolicitudTutoriaListView(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    queryset = Solicitud.objects.all()
+    serializer_class = api_serializer.TutoriaSolicitudSerializer
     
 class TutoriasListView(generics.ListAPIView):
     permission_classes = [AllowAny]
@@ -238,3 +252,39 @@ class AniosLectivosListView(generics.ListAPIView):
 class AsignarCargaDocenteView(generics.CreateAPIView):
     serializer_class = api_serializer.CargaDocenteSerializer
     queryset = CargaDocente.objects.all()
+
+
+
+
+class ObtenerIdTutorView(APIView):
+    permission_classes = [IsAuthenticated]  # 🔒 Requiere autenticación
+
+    def get(self, request):
+        print("🛠 Cabecera de autorización recibida:", request.headers.get("Authorization"))
+        print("🛠 Usuario autenticado:", request.user)
+
+        if not request.user.is_authenticated:
+            return Response({"error": "Usuario no autenticado"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            tutor = Tutor.objects.get(id_user_FK=request.user)
+            return Response({"tutor_id": tutor.id}, status=status.HTTP_200_OK)
+        except Tutor.DoesNotExist:
+            return Response({"tutor_id": None}, status=status.HTTP_200_OK)
+
+
+class ObtenerIdEstudianteView(APIView):
+    permission_classes = [IsAuthenticated]  # 🔒 Requiere autenticación
+
+    def get(self, request):
+        print("🛠 Cabecera de autorización recibida:", request.headers.get("Authorization"))
+        print("🛠 Usuario autenticado:", request.user)
+
+        if not request.user.is_authenticated:
+            return Response({"error": "Usuario no autenticado"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            estudiante = Estudiante.objects.get(id_user_FK=request.user)
+            return Response({"estudiante_id": estudiante.id}, status=status.HTTP_200_OK)
+        except Estudiante.DoesNotExist:
+            return Response({"estudiante_id": None}, status=status.HTTP_200_OK)  

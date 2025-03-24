@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Swal from "sweetalert2"
+import {Link} from "react-router-dom"
 
 export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("")
@@ -56,6 +57,7 @@ export default function ChangePassword() {
     setCurrentPassword("")
     setNewPassword("")
     setConfirmPassword("")
+
   }
 
   return (
@@ -104,12 +106,13 @@ export default function ChangePassword() {
           </div>
 
           <div className="flex justify-start space-x-4 mt-8">
-            <button
-              className="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50"
-              onClick={handleCancel}
+            <Link
+                to="/"
+                className="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50"
+                onClick={handleCancel}
             >
               Cancelar
-            </button>
+            </Link>
             <button
               className="px-4 py-2 border border-transparent rounded-md bg-indigo-600 text-white hover:bg-indigo-700"
               onClick={handleConfirm}
